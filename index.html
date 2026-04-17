@@ -22,6 +22,21 @@
     --warn-soft: #FDF6EC;
     --ok: #15643D;
     --ok-soft: #E8F2EC;
+    --danger: #9F1239;
+    --danger-soft: #FBEAEE;
+    /* Category palette — used only for semantic classification, sparingly */
+    --cat-identity:  #0F3460;
+    --cat-identity-soft: #ECEFF5;
+    --cat-control:   #5B21B6;
+    --cat-control-soft: #F1ECFB;
+    --cat-pep:       #B45309;
+    --cat-pep-soft:  #FDF6EC;
+    --cat-data:      #0E7490;
+    --cat-data-soft: #E5F3F6;
+    --cat-observe:   #15643D;
+    --cat-observe-soft: #E8F2EC;
+    --cat-ai:        #9F1239;
+    --cat-ai-soft:   #FBEAEE;
     --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Inter", "Geist", "Segoe UI", Roboto, sans-serif;
     --s1: 4px;
@@ -436,6 +451,752 @@
     margin-right: auto;
   }
 
+  /* ================= Pillars visual ================= */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--s3);
+    margin: var(--s5) 0 var(--s6) 0;
+  }
+  .pillar {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--pillar-color, var(--accent));
+    padding: var(--s4);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+    cursor: default;
+  }
+  .pillar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -12px rgba(10,10,10,0.18);
+  }
+  .pillar .pillar-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--pillar-color, var(--accent));
+    margin-bottom: var(--s2);
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+  }
+  .pillar .pillar-num::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--pillar-color, var(--accent));
+    display: inline-block;
+  }
+  .pillar h5 {
+    margin: 0 0 var(--s2) 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .pillar p {
+    font-size: 12.5px;
+    color: var(--text-2);
+    margin: 0 0 var(--s3) 0;
+    line-height: 1.55;
+  }
+  .pillar .pillar-bar {
+    height: 4px;
+    background: var(--border);
+    position: relative;
+    margin-top: var(--s3);
+  }
+  .pillar .pillar-bar::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: var(--pillar-maturity, 60%);
+    background: var(--pillar-color, var(--accent));
+    transition: width 800ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .pillar .pillar-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: var(--s2);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Tenets grid */
+  .tenets {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s3);
+    margin: var(--s5) 0;
+  }
+  .tenet {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: var(--s3) var(--s4);
+    font-size: 12.5px;
+    line-height: 1.5;
+    position: relative;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .tenet:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .tenet .t-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: var(--s1);
+  }
+  .tenet b {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .tenet span { color: var(--text-2); }
+
+  /* ================= Flowchart ================= */
+  .flowchart {
+    display: grid;
+    gap: var(--s3);
+    font-size: 13px;
+  }
+  .fc-row {
+    display: flex;
+    align-items: stretch;
+    gap: var(--s3);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .fc-node {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    padding: var(--s3) var(--s4);
+    min-width: 140px;
+    text-align: center;
+    position: relative;
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+  .fc-node.start, .fc-node.end { border-radius: 999px; background: var(--surface-alt); }
+  .fc-node.process { background: var(--surface); }
+  .fc-node.decision {
+    background: var(--warn-soft);
+    border-color: var(--warn);
+    clip-path: polygon(20% 0, 80% 0, 100% 50%, 80% 100%, 20% 100%, 0 50%);
+    padding: var(--s4) var(--s5);
+    min-width: 200px;
+  }
+  .fc-node.allow { background: var(--ok-soft); border-color: var(--ok); }
+  .fc-node.deny  { background: var(--danger-soft); border-color: var(--danger); }
+  .fc-node.step  { background: var(--warn-soft); border-color: var(--warn); }
+  .fc-node small {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    text-transform: uppercase;
+  }
+  .fc-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-2);
+    font-family: var(--mono);
+    font-size: 11px;
+    position: relative;
+    min-height: 24px;
+  }
+  .fc-arrow::after {
+    content: "";
+    position: absolute;
+    width: 2px; height: 100%;
+    background: var(--text-3);
+    top: 0;
+  }
+  .fc-arrow span {
+    background: var(--bg);
+    padding: 2px 8px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.06em;
+  }
+  .fc-branch {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s4);
+    position: relative;
+    padding-top: var(--s4);
+  }
+  .fc-branch::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 16%;
+    width: 68%;
+    height: 1px;
+    background: var(--text-3);
+  }
+  .fc-branch > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s2);
+    position: relative;
+  }
+  .fc-branch > div::before {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--s4));
+    width: 2px;
+    height: var(--s4);
+    background: var(--text-3);
+  }
+  .fc-branch > div .branch-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-2);
+    text-transform: uppercase;
+    padding: 2px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+
+  /* ================= Filter chips ================= */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    margin: var(--s4) 0 var(--s5) 0;
+    padding: var(--s3) var(--s4);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    align-items: center;
+  }
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    margin-right: var(--s2);
+  }
+  .chip {
+    --chip-c: var(--accent);
+    --chip-cs: var(--accent-soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    user-select: none;
+  }
+  .chip::before {
+    content: "";
+    width: 8px; height: 8px;
+    background: var(--chip-c);
+    display: inline-block;
+  }
+  .chip:hover { border-color: var(--chip-c); color: var(--chip-c); }
+  .chip.active { background: var(--chip-cs); border-color: var(--chip-c); color: var(--chip-c); font-weight: 600; }
+  .chip[data-cat="identity"] { --chip-c: var(--cat-identity); --chip-cs: var(--cat-identity-soft); }
+  .chip[data-cat="control"]  { --chip-c: var(--cat-control);  --chip-cs: var(--cat-control-soft); }
+  .chip[data-cat="pep"]      { --chip-c: var(--cat-pep);      --chip-cs: var(--cat-pep-soft); }
+  .chip[data-cat="data"]     { --chip-c: var(--cat-data);     --chip-cs: var(--cat-data-soft); }
+  .chip[data-cat="observe"]  { --chip-c: var(--cat-observe);  --chip-cs: var(--cat-observe-soft); }
+  .chip[data-cat="ai"]       { --chip-c: var(--cat-ai);       --chip-cs: var(--cat-ai-soft); }
+
+  .comp[data-cat] { border-left: 3px solid var(--cat-color, var(--accent)); transition: opacity 250ms ease, transform 250ms ease; }
+  .comp[data-cat="identity"] { --cat-color: var(--cat-identity); }
+  .comp[data-cat="control"]  { --cat-color: var(--cat-control); }
+  .comp[data-cat="pep"]      { --cat-color: var(--cat-pep); }
+  .comp[data-cat="data"]     { --cat-color: var(--cat-data); }
+  .comp[data-cat="observe"]  { --cat-color: var(--cat-observe); }
+  .comp[data-cat="ai"]       { --cat-color: var(--cat-ai); }
+  .comp.hidden { display: none; }
+
+  .comp .comp-cat {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cat-color, var(--accent));
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+  .comp .comp-cat::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--cat-color, var(--accent));
+    display: inline-block;
+  }
+
+  /* ================= Trust gauge ================= */
+  .gauge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: var(--s5);
+    margin: var(--s5) 0;
+  }
+  .gauge-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--s4);
+    flex-wrap: wrap;
+    gap: var(--s3);
+  }
+  .gauge-head h4 { margin: 0; }
+  .gauge-current {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .gauge-current b {
+    font-size: 18px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+  }
+  .gauge-track {
+    height: 40px;
+    background: linear-gradient(90deg,
+      var(--ok-soft) 0%,
+      var(--ok-soft) 20%,
+      var(--warn-soft) 20%,
+      var(--warn-soft) 70%,
+      var(--danger-soft) 70%,
+      var(--danger-soft) 100%);
+    border: 1px solid var(--border-strong);
+    position: relative;
+    margin: var(--s4) 0 var(--s3) 0;
+    cursor: ew-resize;
+    touch-action: none;
+  }
+  .gauge-track::before {
+    content: "";
+    position: absolute;
+    left: 20%;
+    top: -4px; bottom: -4px;
+    width: 1px;
+    background: var(--ok);
+  }
+  .gauge-track::after {
+    content: "";
+    position: absolute;
+    left: 70%;
+    top: -4px; bottom: -4px;
+    width: 1px;
+    background: var(--danger);
+  }
+  .gauge-handle {
+    position: absolute;
+    top: -6px;
+    width: 4px;
+    height: 52px;
+    background: var(--text);
+    transform: translateX(-2px);
+    pointer-events: none;
+    transition: left 120ms ease;
+  }
+  .gauge-handle::after {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    width: 12px;
+    height: 4px;
+    background: var(--text);
+  }
+  .gauge-legend {
+    display: grid;
+    grid-template-columns: 0.2fr 0.5fr 0.3fr;
+    gap: 1px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: var(--s2);
+  }
+  .gauge-legend > div {
+    padding: var(--s2) var(--s3);
+    text-align: center;
+  }
+  .gauge-legend > div:nth-child(1) { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok); }
+  .gauge-legend > div:nth-child(2) { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn); border-left: none; border-right: none; }
+  .gauge-legend > div:nth-child(3) { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger); }
+  .gauge-hint {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-top: var(--s3);
+    font-style: italic;
+  }
+
+  /* ================= Regulatory heatmap ================= */
+  .heatmap-wrap {
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    background: var(--surface);
+    margin: var(--s5) 0;
+  }
+  .heatmap {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+  }
+  .heatmap th, .heatmap td {
+    border: 1px solid var(--border);
+    padding: var(--s2) var(--s3);
+    vertical-align: middle;
+  }
+  .heatmap thead th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    background: var(--surface-alt);
+    font-weight: 500;
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: 120px;
+    padding: var(--s3) var(--s2);
+  }
+  .heatmap thead th.first-col {
+    writing-mode: horizontal-tb;
+    transform: none;
+    text-align: left;
+    height: auto;
+    min-width: 200px;
+  }
+  .heatmap tbody th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 12.5px;
+    background: var(--surface-alt);
+    white-space: nowrap;
+  }
+  .heatmap tbody td {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    transition: transform 200ms ease;
+  }
+  .heatmap tbody td.c0 { background: #FFFFFF; color: var(--text-3); }
+  .heatmap tbody td.c1 { background: #F1ECFB; color: #5B21B6; }
+  .heatmap tbody td.c2 { background: #E0D4F5; color: #4C1D95; font-weight: 600; }
+  .heatmap tbody td.c3 { background: #5B21B6; color: #FFFFFF; font-weight: 700; }
+  .heatmap tbody tr:hover th { background: var(--accent-soft); color: var(--accent); }
+  .heatmap tbody tr:hover td { opacity: 0.95; }
+  .heatmap-scale {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    padding: var(--s3) var(--s4);
+    border-top: 1px solid var(--border);
+    background: var(--surface-alt);
+  }
+  .heatmap-scale .sw {
+    width: 24px; height: 12px; display: inline-block; border: 1px solid var(--border);
+  }
+
+  /* ================= Timeline ================= */
+  .timeline {
+    margin: var(--s5) 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: var(--s5);
+  }
+  .timeline-head {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--s4);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    margin-bottom: var(--s3);
+    padding-bottom: var(--s2);
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline-months {
+    display: grid;
+    grid-template-columns: repeat(36, 1fr);
+    gap: 1px;
+    align-items: end;
+  }
+  .timeline-months span:nth-child(6n+1) {
+    border-left: 1px solid var(--border);
+    padding-left: 2px;
+  }
+  .timeline-months span {
+    font-size: 9px;
+    color: var(--text-3);
+  }
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--s4);
+    align-items: center;
+    padding: var(--s2) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline-row:last-child { border-bottom: none; }
+  .timeline-label {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .timeline-label small {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .timeline-track {
+    position: relative;
+    height: 28px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+  }
+  .timeline-bar {
+    position: absolute;
+    top: 0; bottom: 0;
+    background: var(--bar-color, var(--accent));
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--s2);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 200ms ease, transform 200ms ease;
+    cursor: default;
+  }
+  .timeline-bar:hover {
+    opacity: 1;
+    transform: scaleY(1.05);
+    z-index: 2;
+    box-shadow: 0 4px 12px -6px rgba(10,10,10,0.25);
+  }
+  .timeline-phase-1 { --bar-color: var(--cat-identity); }
+  .timeline-phase-2 { --bar-color: var(--cat-pep); }
+  .timeline-phase-3 { --bar-color: var(--cat-observe); }
+  .timeline-phase-4 { --bar-color: var(--cat-control); }
+  .timeline-phase-5 { --bar-color: var(--cat-ai); }
+  .timeline-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s3);
+    margin-top: var(--s4);
+    padding-top: var(--s3);
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+  .timeline-legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+  }
+  .timeline-legend > span::before {
+    content: "";
+    width: 12px; height: 12px;
+    background: var(--leg, var(--accent));
+    display: inline-block;
+  }
+
+  /* ================= AI matrix ================= */
+  .matrix {
+    position: relative;
+    aspect-ratio: 5 / 3;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin: var(--s4) 0;
+    padding: var(--s6) var(--s6) var(--s7) var(--s7);
+  }
+  .matrix::before, .matrix::after {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    text-transform: uppercase;
+  }
+  .matrix::before {
+    content: "↑ Human-in-the-loop intensity";
+    left: var(--s5);
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: left center;
+  }
+  .matrix::after {
+    content: "False-positive tolerance →";
+    bottom: var(--s4);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .matrix-grid {
+    position: absolute;
+    top: var(--s5); left: var(--s6);
+    right: var(--s5); bottom: var(--s6);
+    background-image:
+      linear-gradient(90deg, var(--border) 1px, transparent 1px),
+      linear-gradient(180deg, var(--border) 1px, transparent 1px);
+    background-size: 25% 33.33%;
+    background-position: 0 0;
+  }
+  .matrix-grid > div {
+    position: absolute;
+    width: 44px; height: 44px;
+    background: var(--surface);
+    border: 2px solid var(--cat-ai);
+    color: var(--cat-ai);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    transform: translate(-50%, -50%);
+    cursor: help;
+    transition: transform 200ms ease;
+  }
+  .matrix-grid > div:hover { transform: translate(-50%, -50%) scale(1.15); z-index: 2; }
+  .matrix-grid > div::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text);
+    white-space: nowrap;
+    text-transform: none;
+    letter-spacing: 0;
+    background: var(--surface);
+    padding: 2px 6px;
+    border: 1px solid var(--border);
+  }
+
+  /* ================= Code tabs ================= */
+  .tabs {
+    margin: var(--s5) 0;
+    border: 1px solid var(--border-strong);
+  }
+  .tab-buttons {
+    display: flex;
+    border-bottom: 1px solid var(--border-strong);
+    background: var(--surface-alt);
+    overflow-x: auto;
+  }
+  .tab-btn {
+    flex: 0 0 auto;
+    padding: var(--s3) var(--s5);
+    border: none;
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    cursor: pointer;
+    border-right: 1px solid var(--border);
+    transition: all 150ms ease;
+  }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn:hover { color: var(--accent); background: var(--accent-soft); }
+  .tab-btn.active {
+    background: var(--surface);
+    color: var(--accent);
+    font-weight: 600;
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .tabs pre { border: none; margin: 0; }
+
+  /* ================= Animated signal plane ================= */
+  .signal-plane svg .signal {
+    stroke-dasharray: 3 3;
+    animation: signalFlow 3s linear infinite;
+  }
+  @keyframes signalFlow {
+    to { stroke-dashoffset: -24; }
+  }
+  .signal-plane svg .pulse {
+    animation: pulse 2.4s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; r: 6; }
+    50% { opacity: 1; r: 8; }
+  }
+
+  /* ================= Fade-in on reveal ================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 600ms ease, transform 600ms ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ================= Responsive ================= */
+  @media (max-width: 900px) {
+    .pillars { grid-template-columns: repeat(2, 1fr); }
+    .tenets  { grid-template-columns: repeat(2, 1fr); }
+    .fc-branch { grid-template-columns: 1fr; }
+    .fc-branch::before { display: none; }
+    .fc-branch > div::before { display: none; }
+    .timeline-head, .timeline-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .pillars { grid-template-columns: 1fr; }
+    .tenets  { grid-template-columns: 1fr; }
+  }
+
   /* Print */
   @media print {
     body { background: white; }
@@ -533,6 +1294,59 @@
   </ol>
 
   <p>The Policy Plane is classified as Tier-0 infrastructure with multi-region active-active redundancy, signed and versioned policy bundles, segregated-duty release, and an independent out-of-band "break-policy" path. The estimated delivery horizon is 36&nbsp;months, phased against DORA Article&nbsp;6 ICT risk framework milestones.</p>
+
+  <h3>CISA Zero Trust Maturity Model &mdash; target state by pillar</h3>
+  <p>The bank targets <em>Advanced</em> maturity on Identity, Devices and Applications, with <em>Optimal</em> on Data and <em>Advanced</em> on Networks by end of phase 3. Bars indicate planned maturity against a four-step CISA scale (Traditional &rarr; Initial &rarr; Advanced &rarr; Optimal). Hover a pillar for detail.</p>
+
+  <div class="pillars" id="pillars-visual">
+    <div class="pillar" style="--pillar-color: var(--cat-identity); --pillar-maturity: 85%;">
+      <div class="pillar-num">Pillar 01</div>
+      <h5>Identity</h5>
+      <p>Workforce, customer and workload identities unified as the control plane. Entra ID, ForgeRock CIAM, SPIFFE/SPIRE.</p>
+      <div class="pillar-bar"></div>
+      <div class="pillar-meta"><span>Advanced</span><span>85%</span></div>
+    </div>
+    <div class="pillar" style="--pillar-color: var(--cat-pep); --pillar-maturity: 75%;">
+      <div class="pillar-num">Pillar 02</div>
+      <h5>Devices</h5>
+      <p>Posture attestation, compliance signals and continuous verification for managed and BYO endpoints. Intune, Tanium, Wiz.</p>
+      <div class="pillar-bar"></div>
+      <div class="pillar-meta"><span>Advanced</span><span>75%</span></div>
+    </div>
+    <div class="pillar" style="--pillar-color: var(--cat-control); --pillar-maturity: 80%;">
+      <div class="pillar-num">Pillar 03</div>
+      <h5>Networks</h5>
+      <p>Micro-segmentation via service mesh mTLS, ZTNA replacing VPN, SASE for egress. Istio, Zscaler, Netskope.</p>
+      <div class="pillar-bar"></div>
+      <div class="pillar-meta"><span>Advanced</span><span>80%</span></div>
+    </div>
+    <div class="pillar" style="--pillar-color: var(--cat-observe); --pillar-maturity: 90%;">
+      <div class="pillar-num">Pillar 04</div>
+      <h5>Applications</h5>
+      <p>Per-request authorisation at API, east-west and SaaS PEPs. FAPI 2.0, OPA, Cedar, AuthZEN wire protocol.</p>
+      <div class="pillar-bar"></div>
+      <div class="pillar-meta"><span>Advanced</span><span>90%</span></div>
+    </div>
+    <div class="pillar" style="--pillar-color: var(--cat-data); --pillar-maturity: 95%;">
+      <div class="pillar-num">Pillar 05</div>
+      <h5>Data</h5>
+      <p>Classification-driven ABAC, tokenisation, FPE, DLP. Immuta, Thales CipherTrust, Venafi, BYOK/HYOK.</p>
+      <div class="pillar-bar"></div>
+      <div class="pillar-meta"><span>Optimal</span><span>95%</span></div>
+    </div>
+  </div>
+
+  <h3>NIST 800-207 &mdash; seven tenets driving every design decision</h3>
+  <div class="tenets">
+    <div class="tenet"><div class="t-num">Tenet 01</div><b>All data sources &amp; compute services are resources</b><span>§2.1.1 &mdash; nothing is excluded by type or location.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 02</div><b>All communication secured regardless of location</b><span>§2.1.2 &mdash; the corporate LAN is not trusted.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 03</div><b>Access on a per-session basis</b><span>§2.1.3 &mdash; trust re-evaluated at every request.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 04</div><b>Access by dynamic policy</b><span>§2.1.4 &mdash; identity, device, behaviour, environment.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 05</div><b>Monitor &amp; measure integrity of owned assets</b><span>§2.1.5 &mdash; CDM feeds continuous posture.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 06</div><b>Dynamic authentication &amp; strict enforcement</b><span>§2.1.6 &mdash; step-up, passkeys, device binding.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 07</div><b>Collect data to improve posture</b><span>§2.1.7 &mdash; signals inform the trust algorithm.</span></div>
+    <div class="tenet" style="border-color: var(--accent); background: var(--accent-soft);"><div class="t-num">Core loop</div><b>PE &larr; Signals; PA &rarr; Bundles; PEPs everywhere</b><span>Every tenet is realised by a concrete component.</span></div>
+  </div>
 </section>
 
 <!-- ========================================================= -->
@@ -909,6 +1723,59 @@
     <li><strong>Evidence.</strong> Every step emits an OpenTelemetry span with <code>trace_id</code>, <code>policy_bundle_hash</code>, <code>decision_id</code> and <code>signal_hash</code>. The full causal chain is reconstructable from the activity log for the SOX §404 evidence pack.</li>
   </ol>
 
+  <div class="figure">
+    <div class="figure-caption"><span>Figure 3b &mdash; Flow A as a decision tree &mdash; allow / step-up / deny outcomes</span><b>C4 L3 &middot; Flow A decision</b></div>
+    <div class="figure-body">
+      <div class="flowchart">
+        <div class="fc-row"><div class="fc-node start">Inbound payment request<small>DPoP + JWS object</small></div></div>
+        <div class="fc-arrow"><span>evaluate</span></div>
+        <div class="fc-row"><div class="fc-node process">Kong FAPI PEP validates<small>token · mTLS · request-object</small></div></div>
+        <div class="fc-arrow"><span>authzen</span></div>
+        <div class="fc-row"><div class="fc-node decision">Trust &amp; risk signals<br/><small style="color:var(--warn)">OPA evaluates policy</small></div></div>
+        <div class="fc-branch">
+          <div>
+            <span class="branch-label">trust&ge;0.85 &middot; risk&le;0.2</span>
+            <div class="fc-node allow">ALLOW<small>audit · route to &micro;svc</small></div>
+          </div>
+          <div>
+            <span class="branch-label">risk 0.2&ndash;0.7 or soft trust</span>
+            <div class="fc-node step">STEP-UP<small>push-authn + SCA dyn-link</small></div>
+          </div>
+          <div>
+            <span class="branch-label">sanctions · tampered · bundle unknown</span>
+            <div class="fc-node deny">DENY<small>WORM audit · alert SOC</small></div>
+          </div>
+        </div>
+        <div class="fc-arrow"><span>step-up branch only</span></div>
+        <div class="fc-row">
+          <div class="fc-node process">Re-evaluate with fresh CTAP2 assertion</div>
+        </div>
+        <div class="fc-arrow"><span>outcome</span></div>
+        <div class="fc-row">
+          <div class="fc-node allow">Allowed &rarr; Istio mTLS &rarr; Payments &micro;svc</div>
+          <div class="fc-node deny">Or deny if factor mismatch</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gauge" id="trust-gauge">
+    <div class="gauge-head">
+      <h4>Interactive trust-score gauge</h4>
+      <div class="gauge-current">Score <b id="gauge-val">0.42</b> &nbsp; decision &nbsp; <b id="gauge-dec" style="color:var(--warn)">STEP-UP</b></div>
+    </div>
+    <p style="font-size: 13px; color: var(--text-2); margin: 0 0 var(--s3) 0;">Drag or click along the bar to see how OPA's policy bands translate a composite <code>trust_score</code> into an enforcement decision. Thresholds align with the Rego fragment in &sect;06 (allow&nbsp;&ge;&nbsp;0.8, deny&nbsp;&ge;&nbsp;0.7 risk, step-up between).</p>
+    <div class="gauge-track" id="gauge-track" role="slider" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.42" aria-label="Trust score" tabindex="0">
+      <div class="gauge-handle" id="gauge-handle" style="left: 42%;"></div>
+    </div>
+    <div class="gauge-legend">
+      <div>Allow &lt; 0.20</div>
+      <div>Step-up 0.20 &ndash; 0.70</div>
+      <div>Deny &ge; 0.70</div>
+    </div>
+    <p class="gauge-hint">Note: the gauge shows the <em>composite risk</em> axis used in step 6 of Flow A. In production the PE consumes a signal vector (trust, risk, posture, jurisdictional flags) and evaluates the full Rego bundle.</p>
+  </div>
+
   <h3>Flow B &mdash; Back-office workload calling the SWIFT gateway</h3>
 
   <ol>
@@ -1015,11 +1882,23 @@ audit := {
 
   <p>Each component is summarised against the five-point template: rationale/tenet, NIST role, vendor options, regulatory alignment and real-world reference. Where no financial-institution public case exists we name the closest analogue rather than fabricate.</p>
 
-  <div class="catalogue">
+  <div class="filter-bar" role="toolbar" aria-label="Filter components by NIST category">
+    <span class="filter-label">Filter by NIST role</span>
+    <button class="chip active" data-cat="all" style="--chip-c: var(--text); --chip-cs: var(--accent-soft);">All 20</button>
+    <button class="chip" data-cat="identity">Identity DS</button>
+    <button class="chip" data-cat="control">Control plane</button>
+    <button class="chip" data-cat="pep">Enforcement point</button>
+    <button class="chip" data-cat="data">Data / posture</button>
+    <button class="chip" data-cat="observe">Observability</button>
+    <button class="chip" data-cat="ai">AI / risk</button>
+    <span id="filter-count" style="margin-left:auto; font-family: var(--mono); font-size: 11px; color: var(--text-3); letter-spacing: 0.08em; text-transform: uppercase;">20 visible</span>
+  </div>
+
+  <div class="catalogue" id="catalogue">
 
   <!-- 1 ForgeRock CIAM -->
-  <div class="comp">
-    <div class="comp-head"><h4>ForgeRock CIAM <span class="chip">Identity</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source</span></div>
+  <div class="comp" data-cat="identity">
+    <div class="comp-head"><h4>ForgeRock CIAM <span class="comp-cat">Identity DS</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Consumer-scale identity with progressive-profiling, risk-based auth, OIDC/FAPI 2.0 issuance and WebAuthn/passkey support. Satisfies NIST 800-207 §2.1 tenets 3 and 6 (per-session, dynamic authentication).</dd>
       <dt>NIST role</dt><dd>Identity Data Source; co-operates with PE as a continuous-signal emitter.</dd>
@@ -1030,8 +1909,8 @@ audit := {
   </div>
 
   <!-- 2 Entra ID -->
-  <div class="comp">
-    <div class="comp-head"><h4>Microsoft Entra ID (Workforce) <span class="chip">Identity</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source</span></div>
+  <div class="comp" data-cat="identity">
+    <div class="comp-head"><h4>Microsoft Entra ID (Workforce) <span class="comp-cat">Identity DS</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Authoritative workforce directory, tight integration with Microsoft 365 and Conditional Access. Issues OIDC tokens consumed by PEPs and provides a rich posture signal (device compliance via Intune). NIST 800-207 §2.1 tenet 7 (continuous monitoring of user and device).</dd>
       <dt>NIST role</dt><dd>Identity Data Source; Conditional Access engine is effectively a per-application PDP.</dd>
@@ -1042,8 +1921,8 @@ audit := {
   </div>
 
   <!-- 3 Okta Workforce -->
-  <div class="comp">
-    <div class="comp-head"><h4>Okta Workforce (Federation Broker) <span class="chip">Identity</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source / PEP for SaaS</span></div>
+  <div class="comp" data-cat="identity">
+    <div class="comp-head"><h4>Okta Workforce (Federation Broker) <span class="comp-cat">Identity DS / PEP</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source / PEP for SaaS</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>SaaS federation hub for ~1,200 applications. Reduces the fan-out of trust relationships from the workforce IdP to one broker. Enforces session-risk and device-trust at SaaS ingress.</dd>
       <dt>NIST role</dt><dd>Secondary Identity Data Source; acts as a PEP for SaaS sessions in cooperation with Netskope CASB.</dd>
@@ -1054,8 +1933,8 @@ audit := {
   </div>
 
   <!-- 4 SPIRE -->
-  <div class="comp">
-    <div class="comp-head"><h4>SPIFFE / SPIRE <span class="chip">Workload Identity</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source (workload)</span></div>
+  <div class="comp" data-cat="identity">
+    <div class="comp-head"><h4>SPIFFE / SPIRE <span class="comp-cat">Workload Identity</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source (workload)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Cryptographically verifiable, short-lived workload identities across K8s, VMs and AWS Lambda. Eliminates long-lived service-account secrets. NIST 800-207 §2.1 tenet 2 (security of all resources regardless of location) applied to services.</dd>
       <dt>NIST role</dt><dd>Identity Data Source for workloads; issuer for the workload-PKI used by PEPs.</dd>
@@ -1066,8 +1945,8 @@ audit := {
   </div>
 
   <!-- 5 OPA -->
-  <div class="comp">
-    <div class="comp-head"><h4>Open Policy Agent (PE) <span class="chip">Control Plane</span></h4><span class="comp-tag">NIST &mdash; Policy Engine (PDP)</span></div>
+  <div class="comp" data-cat="control">
+    <div class="comp-head"><h4>Open Policy Agent (PE) <span class="comp-cat">Control Plane</span></h4><span class="comp-tag">NIST &mdash; Policy Engine (PDP)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>The PE of choice &mdash; declarative Rego, deterministic evaluation, sub-millisecond P99 at sidecar scale, bundle-based signed distribution. AuthZEN-capable.</dd>
       <dt>NIST role</dt><dd>Policy Engine (per §3.1.1).</dd>
@@ -1078,8 +1957,8 @@ audit := {
   </div>
 
   <!-- 6 Policy Administrator -->
-  <div class="comp">
-    <div class="comp-head"><h4>Policy Administrator <span class="chip">Control Plane</span></h4><span class="comp-tag">NIST &mdash; Policy Administrator (PA)</span></div>
+  <div class="comp" data-cat="control">
+    <div class="comp-head"><h4>Policy Administrator <span class="comp-cat">Control Plane</span></h4><span class="comp-tag">NIST &mdash; Policy Administrator (PA)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>The PA compiles, tests, signs (cosign, in-toto) and publishes policy bundles to the PE fleet. Enforces segregation of duties &mdash; no single engineer can push policy to production. Direct execution of NIST 800-207 §2.1 tenet 5.</dd>
       <dt>NIST role</dt><dd>Policy Administrator.</dd>
@@ -1090,8 +1969,8 @@ audit := {
   </div>
 
   <!-- 7 Kong -->
-  <div class="comp">
-    <div class="comp-head"><h4>API Gateway (Kong + FAPI module) <span class="chip">PEP</span></h4><span class="comp-tag">NIST &mdash; Policy Enforcement Point</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>API Gateway (Kong + FAPI module) <span class="comp-cat">PEP</span></h4><span class="comp-tag">NIST &mdash; Policy Enforcement Point</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>North-south API enforcement for retail, corporate and Open Banking. Validates tokens, DPoP, mTLS binding, request-object signing, rate limits, bot defence.</dd>
       <dt>NIST role</dt><dd>PEP.</dd>
@@ -1102,8 +1981,8 @@ audit := {
   </div>
 
   <!-- 8 Istio -->
-  <div class="comp">
-    <div class="comp-head"><h4>Istio Service Mesh <span class="chip">PEP (east-west)</span></h4><span class="comp-tag">NIST &mdash; PEP (east-west)</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>Istio Service Mesh <span class="comp-cat">PEP (east-west)</span></h4><span class="comp-tag">NIST &mdash; PEP (east-west)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>mTLS with SPIFFE SVIDs, per-request authorisation via Envoy external AuthZ calling OPA, structured access logs. Covers every east-west hop in K8s.</dd>
       <dt>NIST role</dt><dd>PEP for service-to-service traffic; cooperates with SPIRE.</dd>
@@ -1114,8 +1993,8 @@ audit := {
   </div>
 
   <!-- 9 ZPA -->
-  <div class="comp">
-    <div class="comp-head"><h4>Zscaler Private Access (ZTNA) <span class="chip">PEP</span></h4><span class="comp-tag">NIST &mdash; PEP (user-to-app)</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>Zscaler Private Access (ZTNA) <span class="comp-cat">PEP (user-to-app)</span></h4><span class="comp-tag">NIST &mdash; PEP (user-to-app)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Replaces legacy VPN. Per-application tunnels brokered against identity and device posture, with no lateral visibility of internal networks.</dd>
       <dt>NIST role</dt><dd>PEP for workforce access to internal apps.</dd>
@@ -1126,8 +2005,8 @@ audit := {
   </div>
 
   <!-- 10 CyberArk PAM -->
-  <div class="comp">
-    <div class="comp-head"><h4>CyberArk PAM <span class="chip">Privileged Access</span></h4><span class="comp-tag">NIST &mdash; PEP (privileged)</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>CyberArk PAM <span class="comp-cat">Privileged PEP</span></h4><span class="comp-tag">NIST &mdash; PEP (privileged)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>JIT elevation, session recording and vaulted credentials for Tier-0 and payments systems. Break-glass gateway into SWIFT Alliance, HSMs and the Payments Hub.</dd>
       <dt>NIST role</dt><dd>PEP for privileged sessions; Identity Data Source for privileged events.</dd>
@@ -1138,8 +2017,8 @@ audit := {
   </div>
 
   <!-- 11 Vault + HSM -->
-  <div class="comp">
-    <div class="comp-head"><h4>HashiCorp Vault + nCipher/AWS CloudHSM <span class="chip">Secrets</span></h4><span class="comp-tag">NIST &mdash; Supporting Infrastructure / PKI DS</span></div>
+  <div class="comp" data-cat="data">
+    <div class="comp-head"><h4>HashiCorp Vault + nCipher/AWS CloudHSM <span class="comp-cat">Secrets / PKI DS</span></h4><span class="comp-tag">NIST &mdash; Supporting Infrastructure / PKI DS</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Dynamic secrets for databases, cloud APIs and certificates; HSM-rooted signing for high-assurance keys (CIAM, FAPI JWS signer, eIDAS QWAC issuance). BYOK/HYOK for AWS KMS and Azure Key Vault.</dd>
       <dt>NIST role</dt><dd>Supporting infrastructure; also a PKI Data Source.</dd>
@@ -1150,8 +2029,8 @@ audit := {
   </div>
 
   <!-- 12 Splunk + Snowflake -->
-  <div class="comp">
-    <div class="comp-head"><h4>Splunk ES + Snowflake Security Lake <span class="chip">SIEM</span></h4><span class="comp-tag">NIST &mdash; Activity Log / SIEM Data Source</span></div>
+  <div class="comp" data-cat="observe">
+    <div class="comp-head"><h4>Splunk ES + Snowflake Security Lake <span class="comp-cat">SIEM</span></h4><span class="comp-tag">NIST &mdash; Activity Log / SIEM Data Source</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Real-time detection in Splunk ES; long-term, cost-efficient retention and analytics in Snowflake. Every PEP decision and identity event indexed by <code>trace_id</code> and <code>decision_id</code>.</dd>
       <dt>NIST role</dt><dd>Activity Log and SIEM Data Sources.</dd>
@@ -1162,8 +2041,8 @@ audit := {
   </div>
 
   <!-- 13 OTel -->
-  <div class="comp">
-    <div class="comp-head"><h4>OpenTelemetry + Grafana/Dynatrace <span class="chip">Observability</span></h4><span class="comp-tag">NIST &mdash; Activity Log DS</span></div>
+  <div class="comp" data-cat="observe">
+    <div class="comp-head"><h4>OpenTelemetry + Grafana/Dynatrace <span class="comp-cat">Observability</span></h4><span class="comp-tag">NIST &mdash; Activity Log DS</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Single vendor-neutral telemetry pipeline: traces, metrics, logs. PEP decision latency SLO (P99 &lt; 10 ms) requires tight instrumentation.</dd>
       <dt>NIST role</dt><dd>Activity Log Data Source; also observability of PE/PA health.</dd>
@@ -1174,8 +2053,8 @@ audit := {
   </div>
 
   <!-- 14 Wiz + Tanium -->
-  <div class="comp">
-    <div class="comp-head"><h4>Wiz (CNAPP) + Tanium (Endpoint) <span class="chip">Posture</span></h4><span class="comp-tag">NIST &mdash; CDM Data Source</span></div>
+  <div class="comp" data-cat="data">
+    <div class="comp-head"><h4>Wiz (CNAPP) + Tanium (Endpoint) <span class="comp-cat">CDM / Posture</span></h4><span class="comp-tag">NIST &mdash; CDM Data Source</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>CDM signal feeds (vulnerability, configuration drift, exposure, compliance) to the PE. Tanium covers endpoints; Wiz covers cloud workloads and IaC.</dd>
       <dt>NIST role</dt><dd>Continuous Diagnostics and Mitigation (CDM) Data Source.</dd>
@@ -1186,8 +2065,8 @@ audit := {
   </div>
 
   <!-- 15 Venafi -->
-  <div class="comp">
-    <div class="comp-head"><h4>Venafi TLS Protect + AWS Private CA <span class="chip">PKI</span></h4><span class="comp-tag">NIST &mdash; PKI Data Source</span></div>
+  <div class="comp" data-cat="data">
+    <div class="comp-head"><h4>Venafi TLS Protect + AWS Private CA <span class="comp-cat">PKI</span></h4><span class="comp-tag">NIST &mdash; PKI Data Source</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Enterprise certificate lifecycle including discovery, rotation and policy across on-prem and cloud CAs. SPIFFE SVIDs handle the workload-PKI layer; Venafi covers the long-lived enterprise layer.</dd>
       <dt>NIST role</dt><dd>PKI Data Source / supporting infrastructure.</dd>
@@ -1198,8 +2077,8 @@ audit := {
   </div>
 
   <!-- 16 Immuta -->
-  <div class="comp">
-    <div class="comp-head"><h4>Immuta (Data-plane ABAC) <span class="chip">Data</span></h4><span class="comp-tag">NIST &mdash; Data Access Policy DS</span></div>
+  <div class="comp" data-cat="data">
+    <div class="comp-head"><h4>Immuta (Data-plane ABAC) <span class="comp-cat">Data Access Policy</span></h4><span class="comp-tag">NIST &mdash; Data Access Policy DS</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Row/column ABAC for Snowflake, Databricks and S3. Classification-driven policies; dynamic masking by subject purpose.</dd>
       <dt>NIST role</dt><dd>Data Access Policy Data Source; also a data-plane PEP.</dd>
@@ -1210,8 +2089,8 @@ audit := {
   </div>
 
   <!-- 17 Netskope -->
-  <div class="comp">
-    <div class="comp-head"><h4>Netskope SSE (CASB + SWG + DLP) <span class="chip">PEP</span></h4><span class="comp-tag">NIST &mdash; PEP (SaaS)</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>Netskope SSE (CASB + SWG + DLP) <span class="comp-cat">SaaS PEP</span></h4><span class="comp-tag">NIST &mdash; PEP (SaaS)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Inline control of SaaS sessions and DLP for data-in-motion. Needed because ~1,200 SaaS tenants cannot all be placed behind API gateways.</dd>
       <dt>NIST role</dt><dd>PEP for SaaS and egress paths; DLP Data Source.</dd>
@@ -1222,8 +2101,8 @@ audit := {
   </div>
 
   <!-- 18 Authlete -->
-  <div class="comp">
-    <div class="comp-head"><h4>Authlete (FAPI 2.0 Engine) <span class="chip">API</span></h4><span class="comp-tag">NIST &mdash; Supporting Infra / PEP helper</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>Authlete (FAPI 2.0 Engine) <span class="comp-cat">PEP helper</span></h4><span class="comp-tag">NIST &mdash; Supporting Infra / PEP helper</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Reference-implementation of FAPI 2.0, CIBA, Pushed Authorisation Requests (PAR) and JARM, behind Kong. Gets the OAuth engine right so Kong focuses on enforcement.</dd>
       <dt>NIST role</dt><dd>Supporting infrastructure beneath the FAPI PEP.</dd>
@@ -1234,8 +2113,8 @@ audit := {
   </div>
 
   <!-- 19 Mainframe bridge -->
-  <div class="comp">
-    <div class="comp-head"><h4>Broadcom Advanced Authentication Mainframe <span class="chip">z/OS</span></h4><span class="comp-tag">NIST &mdash; PEP (mainframe)</span></div>
+  <div class="comp" data-cat="pep">
+    <div class="comp-head"><h4>Broadcom Advanced Authentication Mainframe <span class="comp-cat">Mainframe PEP</span></h4><span class="comp-tag">NIST &mdash; PEP (mainframe)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Bridges modern OIDC/Kerberos identities into RACF IDs with Kerberos constrained delegation and digital-certificate mapping. Enables ZTA for <code>z/OS</code> without rewriting CICS transactions.</dd>
       <dt>NIST role</dt><dd>PEP for mainframe; Identity Gateway.</dd>
@@ -1246,8 +2125,8 @@ audit := {
   </div>
 
   <!-- 20 Featurespace -->
-  <div class="comp">
-    <div class="comp-head"><h4>Featurespace ARIC (Transaction Risk) <span class="chip">AI</span></h4><span class="comp-tag">NIST &mdash; Risk / Threat Intel DS</span></div>
+  <div class="comp" data-cat="ai">
+    <div class="comp-head"><h4>Featurespace ARIC (Transaction Risk) <span class="comp-cat">Risk AI</span></h4><span class="comp-tag">NIST &mdash; Risk / Threat Intel DS</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>Adaptive behavioural analytics producing per-transaction fraud and AML risk scores consumed by the PE and step-up policy.</dd>
       <dt>NIST role</dt><dd>Continuous-signal Data Source for the PE.</dd>
@@ -1434,6 +2313,72 @@ audit := {
       </tbody>
     </table>
   </div>
+
+  <h3>Regulatory coverage heatmap &mdash; component &times; obligation</h3>
+  <p>The shading indicates the intensity of regulatory mapping: a dark cell means the component is directly and materially load-bearing for that regulation; mid-shade means it contributes evidence; light means it participates tangentially. This view helps the ARB confirm there is no single regulation without redundant coverage and no orphaned component whose regulatory role is unclear.</p>
+
+  <div class="heatmap-wrap">
+    <table class="heatmap" aria-label="Regulatory coverage matrix">
+      <thead>
+        <tr>
+          <th class="first-col">Component</th>
+          <th>PSD2 / SCA</th>
+          <th>FAPI 2.0</th>
+          <th>DORA</th>
+          <th>SOX §404</th>
+          <th>PCI-DSS 4.0</th>
+          <th>GDPR</th>
+          <th>EU AI Act</th>
+          <th>SWIFT CSCF</th>
+          <th>FFIEC / MAS</th>
+          <th>NIST 800-207</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>ForgeRock CIAM</th>           <td class="c3">■■■</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td></tr>
+        <tr><th>Entra ID</th>                <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c0">·</td><td class="c1">■</td><td class="c2">■■</td><td class="c3">■■■</td></tr>
+        <tr><th>Okta Workforce</th>          <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c2">■■</td></tr>
+        <tr><th>SPIRE</th>                   <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td></tr>
+        <tr><th>Open Policy Agent</th>       <td class="c1">■</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c3">■■■</td></tr>
+        <tr><th>Policy Administrator</th>    <td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c0">·</td><td class="c3">■■■</td></tr>
+        <tr><th>Kong + Authlete</th>         <td class="c3">■■■</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td></tr>
+        <tr><th>Istio Service Mesh</th>      <td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td><td class="c3">■■■</td></tr>
+        <tr><th>Zscaler Private Access</th>  <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c2">■■</td></tr>
+        <tr><th>CyberArk PAM</th>            <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c2">■■</td></tr>
+        <tr><th>Vault + HSM</th>             <td class="c1">■</td><td class="c1">■</td><td class="c2">■■</td><td class="c1">■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td></tr>
+        <tr><th>Splunk + Snowflake</th>      <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c1">■</td><td class="c2">■■</td><td class="c2">■■</td><td class="c2">■■</td></tr>
+        <tr><th>OpenTelemetry</th>           <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td></tr>
+        <tr><th>Wiz + Tanium</th>            <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c2">■■</td><td class="c2">■■</td></tr>
+        <tr><th>Venafi + AWS PCA</th>        <td class="c2">■■</td><td class="c2">■■</td><td class="c2">■■</td><td class="c0">·</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c0">·</td><td class="c1">■</td></tr>
+        <tr><th>Immuta</th>                  <td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td></tr>
+        <tr><th>Netskope SSE</th>            <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td></tr>
+        <tr><th>Broadcom AAM (z/OS)</th>     <td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td></tr>
+        <tr><th>Featurespace ARIC</th>       <td class="c3">■■■</td><td class="c0">·</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c2">■■</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td></tr>
+        <tr><th>AI Gateway PEP</th>          <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td></tr>
+      </tbody>
+    </table>
+    <div class="heatmap-scale">
+      <span class="sw" style="background:#FFFFFF;"></span><span>None</span>
+      <span class="sw" style="background:#F1ECFB;"></span><span>Tangential</span>
+      <span class="sw" style="background:#E0D4F5;"></span><span>Contributory</span>
+      <span class="sw" style="background:#5B21B6;"></span><span>Load-bearing</span>
+      <span style="margin-left:auto;">Hover a row to highlight the component</span>
+    </div>
+  </div>
+
+  <h3>AI use-case risk matrix &mdash; false-positive tolerance vs HITL intensity</h3>
+  <p>Each of the six AI use cases from &sect;09 plotted by how much false-positive latitude the use case allows (x-axis) against how tightly humans supervise its outputs (y-axis). The upper-left quadrant (low FP tolerance, heavy HITL) is where regulated decisions live; the lower-right (high FP tolerance, light HITL) is where suggestion-only tools sit.</p>
+
+  <div class="matrix" aria-label="AI use-case risk matrix">
+    <div class="matrix-grid">
+      <div style="left: 25%; top: 18%;"  data-label="9.3 Fraud / AML">3</div>
+      <div style="left: 35%; top: 30%;"  data-label="9.2 Adaptive auth">2</div>
+      <div style="left: 45%; top: 45%;"  data-label="9.1 UEBA">1</div>
+      <div style="left: 72%; top: 58%;"  data-label="9.4 SOC copilot">4</div>
+      <div style="left: 82%; top: 72%;"  data-label="9.6 Vuln discovery">6</div>
+      <div style="left: 32%; top: 72%;"  data-label="9.5 Policy drafting">5</div>
+    </div>
+  </div>
 </section>
 
 <!-- ========================================================= -->
@@ -1457,6 +2402,87 @@ audit := {
   <div class="callout warn">
     <span class="callout-label">Risk flag</span>
     Two assumptions, if invalidated, require re-scoping: (i) the mainframe remains out of scope for decomposition; (ii) AuthZEN matures sufficiently for vendor-neutral PDP-PEP calls. Either change should be escalated to the ARB for a scope amendment before Phase 2 spend.
+  </div>
+
+  <h3>36-month delivery roadmap</h3>
+  <p>Phased rollout aligned with DORA Article 6 ICT risk framework milestones. Each bar is clickable for a summary of deliverables; colour encodes the owning pillar. Overlapping bars intentionally represent parallel streams under the same ART.</p>
+
+  <div class="timeline" aria-label="Implementation roadmap 2026-2029">
+    <div class="timeline-head">
+      <div>Workstream</div>
+      <div class="timeline-months">
+        <span>M1</span><span></span><span></span><span></span><span></span><span></span>
+        <span>M7</span><span></span><span></span><span></span><span></span><span></span>
+        <span>M13</span><span></span><span></span><span></span><span></span><span></span>
+        <span>M19</span><span></span><span></span><span></span><span></span><span></span>
+        <span>M25</span><span></span><span></span><span></span><span></span><span></span>
+        <span>M31</span><span></span><span></span><span></span><span></span><span>M36</span>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Identity foundation<small>Phase 1 &middot; Entra · SPIRE · Okta</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-1" style="left: 0%; width: 28%;" title="Workforce IdP consolidation, SPIRE node-attestation rollout">Identity foundation</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Policy plane (PE/PA)<small>Phase 1&ndash;2 &middot; OPA · Styra · AuthZEN</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-4" style="left: 14%; width: 36%;" title="OPA sidecar fleet, signed bundle pipeline, PE multi-region">Policy plane</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">PEP rollout<small>Phase 2 &middot; Kong · Istio · ZPA · CyberArk</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-2" style="left: 22%; width: 44%;" title="Staged PEP adoption by domain, starting with customer APIs">PEP rollout</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Mainframe bridge<small>Phase 2 &middot; Broadcom AAM · RACF mapping</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-2" style="left: 33%; width: 25%;" title="OIDC→RACF mapping, CICS identity propagation, PoC to GA">Mainframe bridge</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">Data-plane ABAC<small>Phase 2&ndash;3 &middot; Immuta · tokenisation</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-3" style="left: 39%; width: 38%;" title="Immuta on Snowflake + Databricks; PAN tokenisation vault">Data ABAC + tokenisation</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">SIEM &amp; audit<small>Phase 3 &middot; Splunk · Snowflake · WORM</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-3" style="left: 28%; width: 50%;" title="Structured PEP event schema, decision log retention, SOX evidence replay">SIEM &amp; WORM audit</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">AI Gateway &amp; UEBA<small>Phase 3 &middot; Featurespace · AI PEP</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-5" style="left: 55%; width: 32%;" title="AI Gateway PEP, UEBA in shadow then enforcing, policy-drafting copilot">AI Gateway + UEBA</div>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-label">TLPT &amp; DORA attestation<small>Phase 3 &middot; red-team · regulator evidence</small></div>
+      <div class="timeline-track">
+        <div class="timeline-bar timeline-phase-5" style="left: 80%; width: 20%;" title="DORA TLPT, SOX §404 walk-through, PRA §SS1/21 submission">TLPT + DORA</div>
+      </div>
+    </div>
+
+    <div class="timeline-legend">
+      <span style="--leg: var(--cat-identity);">Identity</span>
+      <span style="--leg: var(--cat-control);">Control plane</span>
+      <span style="--leg: var(--cat-pep);">Enforcement</span>
+      <span style="--leg: var(--cat-observe);">Observability</span>
+      <span style="--leg: var(--cat-ai);">AI / Assurance</span>
+    </div>
   </div>
 </section>
 
@@ -1492,6 +2518,104 @@ audit := {
       });
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
     map.forEach((_, el) => io.observe(el));
+  })();
+
+  // ------------ Component catalogue filter ------------
+  (function() {
+    const chips = document.querySelectorAll('.filter-bar .chip');
+    const comps = document.querySelectorAll('#catalogue .comp');
+    const counter = document.getElementById('filter-count');
+    if (!chips.length || !comps.length) return;
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const cat = chip.getAttribute('data-cat');
+        let shown = 0;
+        comps.forEach(c => {
+          const match = cat === 'all' || c.getAttribute('data-cat') === cat;
+          c.classList.toggle('hidden', !match);
+          if (match) shown++;
+        });
+        if (counter) counter.textContent = shown + ' visible';
+      });
+    });
+  })();
+
+  // ------------ Trust-score gauge ------------
+  (function() {
+    const track = document.getElementById('gauge-track');
+    const handle = document.getElementById('gauge-handle');
+    const valEl = document.getElementById('gauge-val');
+    const decEl = document.getElementById('gauge-dec');
+    if (!track || !handle) return;
+
+    function update(pct) {
+      pct = Math.max(0, Math.min(100, pct));
+      const v = pct / 100;
+      handle.style.left = pct + '%';
+      valEl.textContent = v.toFixed(2);
+      track.setAttribute('aria-valuenow', v.toFixed(2));
+      let decision, color;
+      if (v < 0.20) { decision = 'ALLOW'; color = 'var(--ok)'; }
+      else if (v < 0.70) { decision = 'STEP-UP'; color = 'var(--warn)'; }
+      else { decision = 'DENY'; color = 'var(--danger)'; }
+      decEl.textContent = decision;
+      decEl.style.color = color;
+    }
+
+    function setFromEvent(e) {
+      const rect = track.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const pct = ((clientX - rect.left) / rect.width) * 100;
+      update(pct);
+    }
+
+    let dragging = false;
+    track.addEventListener('mousedown', (e) => { dragging = true; setFromEvent(e); });
+    window.addEventListener('mousemove', (e) => { if (dragging) setFromEvent(e); });
+    window.addEventListener('mouseup', () => { dragging = false; });
+    track.addEventListener('touchstart', (e) => { dragging = true; setFromEvent(e); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { if (dragging) setFromEvent(e); }, { passive: true });
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    track.addEventListener('keydown', (e) => {
+      const current = parseFloat(track.getAttribute('aria-valuenow') || '0.42') * 100;
+      if (e.key === 'ArrowLeft') { update(current - 2); e.preventDefault(); }
+      if (e.key === 'ArrowRight') { update(current + 2); e.preventDefault(); }
+      if (e.key === 'Home') { update(0); e.preventDefault(); }
+      if (e.key === 'End')  { update(100); e.preventDefault(); }
+    });
+  })();
+
+  // ------------ Reveal on scroll for pillars, flowchart, timeline ------------
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    const targets = document.querySelectorAll('.pillar, .tenet, .timeline-bar, .fc-node');
+    targets.forEach(t => t.classList.add('reveal'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, idx) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = ((idx % 8) * 40) + 'ms';
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    targets.forEach(t => io.observe(t));
+  })();
+
+  // ------------ Heatmap row hover dims unrelated rows ------------
+  (function() {
+    const rows = document.querySelectorAll('.heatmap tbody tr');
+    rows.forEach(r => {
+      r.addEventListener('mouseenter', () => {
+        rows.forEach(other => { if (other !== r) other.style.opacity = '0.45'; });
+      });
+      r.addEventListener('mouseleave', () => {
+        rows.forEach(other => { other.style.opacity = ''; });
+      });
+    });
   })();
 </script>
 
