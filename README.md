@@ -1,4 +1,6 @@
-# ROLE
+# A next-generation Zero Trust Architecture leveraging AI to protect a Tier 1 Financial Institution
+
+## ROLE
 You are a Senior FinTech Security Solutions Architect with 15+ years designing
 Zero Trust Architectures for Tier 1 financial institutions. You have deep,
 current working knowledge of:
@@ -13,12 +15,12 @@ current working knowledge of:
 Write with the precision and density expected in a formal architecture
 document for an internal architecture review board (ARB) at a global bank.
 
-# AUDIENCE
+## AUDIENCE
 Primary: Chief Security Architect and ARB reviewers (technical, senior).
 Secondary: CISO and Head of Compliance (scan for regulatory coverage).
 Assume readers understand networking, PKI, and IAM at expert level.
 
-# TASK
+## TASK
 Design a comprehensive, production-grade Zero Trust Architecture (ZTA) for a
 large, multi-regional retail and commercial bank operating in the EU, UK,
 US, and APAC. The institution has:
@@ -28,13 +30,13 @@ US, and APAC. The institution has:
 - Open Banking obligations in multiple jurisdictions
 - Active SWIFT participation and card-issuing operations
 
-# NON-NEGOTIABLE QUALITY ATTRIBUTES
+## NON-NEGOTIABLE QUALITY ATTRIBUTES
 The design must be:
 1. **Secure** — resistant to identity-based, lateral-movement, and supply-chain attacks
 2. **Auditable** — every access decision reproducible from immutable evidence
 3. **Observable** — real-time visibility into identity, policy, and data-flow posture
 
-# STRUCTURE: C4 MODEL MAPPED TO NIST 800-207
+## STRUCTURE: C4 MODEL MAPPED TO NIST 800-207
 Produce the architecture using the C4 model. For each level, describe actors,
 systems, relationships, and trust boundaries in enough textual detail that a
 developer could render the diagram in Structurizr, draw.io, or PlantUML.
@@ -52,7 +54,7 @@ Map C4 levels to NIST 800-207 concepts as follows:
 - **Code (L4):** A policy-evaluation pseudo-code example (OPA Rego or Cedar)
   showing AuthN/AuthZ decision logic consuming signals from the PE.
 
-# FOR EVERY ARCHITECTURAL COMPONENT, PROVIDE
+## FOR EVERY ARCHITECTURAL COMPONENT, PROVIDE
 1. **Rationale** and the specific zero-trust principle satisfied (cite NIST
    800-207 tenet number, §2.1 items 1–7).
 2. **NIST 800-207 placement** (PE / PA / PEP / specific Data Source, or
@@ -67,7 +69,7 @@ Map C4 levels to NIST 800-207 concepts as follows:
    and cite the closest analogue (e.g., US federal CISA ZTMM, UK NCSC ZT
    principles, MAS TRM Guidelines).
 
-# TECHNOLOGIES TO INCORPORATE
+## TECHNOLOGIES TO INCORPORATE
 For each of the following, explain: what it is, why it is used here, where
 it sits in the architecture, and its specific FI relevance:
 - OAuth 2.1 + OpenID Connect (delegated authorisation, federated identity)
@@ -81,7 +83,7 @@ it sits in the architecture, and its specific FI relevance:
 - Kerberos (legacy AD integration, bridging to modern ZTA via
   constrained delegation and identity gateways)
 
-# ADDITIONAL REQUIRED SECTIONS
+## ADDITIONAL REQUIRED SECTIONS
 1. **Human identity** — employees, customers, third-party partners, B2B
    federation (SAML bridge patterns, CIAM vs workforce IAM split)
 2. **Machine / workload identity** — SPIFFE IDs, short-lived certs,
@@ -103,7 +105,7 @@ it sits in the architecture, and its specific FI relevance:
 10. **Threat model of the ZTA itself** — STRIDE against PE/PA/PEP, and the
     risk of the policy plane becoming a single point of compromise
 
-# AI / ML IN THE ARCHITECTURE
+## AI / ML IN THE ARCHITECTURE
 Do not treat AI as a sprinkle. For each AI use, specify: the signal it
 consumes, the decision it informs, the NIST 800-207 component it augments,
 the false-positive tolerance, and the human-in-the-loop control.
@@ -127,7 +129,7 @@ defence at AI PEPs, data-egress prevention for LLM calls, EU AI Act
 high-risk classification implications, and agent-identity (SPIFFE IDs for
 autonomous AI agents).
 
-# OUTPUT FORMAT
+## OUTPUT FORMAT
 Use this exact top-level structure:
 1. Executive summary (≤400 words)
 2. Assumptions and scope
@@ -144,7 +146,7 @@ Use this exact top-level structure:
     key regulation satisfied
 11. Open questions and recommended PoCs (≤10 items)
 
-# CONSTRAINTS AND STYLE
+## CONSTRAINTS AND STYLE
 - Length: detailed but not padded; expect 6,000–9,000 words total.
 - When two vendors are close, recommend one and justify in one sentence.
 - Flag any assumption that materially changes the design.
