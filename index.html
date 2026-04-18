@@ -305,7 +305,7 @@
     margin: 0 auto;
     padding: var(--s7) var(--s6);
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--s6);
   }
   .site-footer h4 {
@@ -403,33 +403,8 @@
   .byline-social a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .byline-social svg { width: 14px; height: 14px; display: block; }
 
-  /* Share row */
-  .share-row { margin-top: var(--s2); }
-  .share-links {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: var(--s2);
-    vertical-align: -3px;
-  }
-  .share-links a,
-  .share-links button {
-    color: var(--text-3);
-    display: inline-flex;
-    border: none;
-    background: none;
-    padding: 2px;
-    border-radius: 3px;
-    cursor: pointer;
-    font: inherit;
-    transition: color 180ms ease, background 180ms ease;
-  }
-  .share-links a:hover,
-  .share-links button:hover { color: var(--accent); background: var(--accent-soft); }
-  .share-links a:focus-visible,
-  .share-links button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .share-links svg { width: 14px; height: 14px; display: block; }
-  .share-links .copied {
+  /* Copy-to-clipboard toast (used by section permalinks) */
+  .copied {
     position: absolute;
     background: var(--text);
     color: var(--bg);
@@ -2059,20 +2034,6 @@
           </a>
         </span>
       </div>
-      <div class="share-row">
-        <b>Share</b>
-        <span class="share-links">
-          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fjamesbuckett.github.io%2Fzta-financial-institution-c4-ai%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-          <a href="https://twitter.com/intent/tweet?text=Zero%20Trust%20Architecture%20for%20Banks%20%E2%80%94%20C4%20%2B%20NIST%20800-207&amp;url=https%3A%2F%2Fjamesbuckett.github.io%2Fzta-financial-institution-c4-ai%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on X">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-          </a>
-          <button type="button" class="share-copy" aria-label="Copy link to this page" data-copy-url>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
-        </span>
-      </div>
     </div>
   </div>
 </header>
@@ -2106,7 +2067,6 @@
     <li><a href="#catalogue">Component catalogue</a></li>
     <li><a href="#cross">Cross-cutting concerns</a></li>
     <li><a href="#ai">AI / ML catalogue</a></li>
-    <li><a href="#summary">Summary table</a></li>
     <li><a href="#open">Open questions &amp; PoCs</a></li>
     <li><a href="#models">Mental models</a></li>
     <li><a href="#scenarios">Scenario gallery</a></li>
@@ -3128,113 +3088,6 @@ audit := {
 </section>
 
 <!-- ========================================================= -->
-<section id="summary">
-  <div class="eyebrow">Section 10</div>
-  <h2><span class="num" aria-hidden="true">&sect;10</span> Summary &mdash; component &rarr; NIST role &rarr; vendor &rarr; regulation</h2>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 20%">Component</th>
-          <th style="width: 20%">NIST 800-207 Role</th>
-          <th style="width: 20%">Primary Vendor</th>
-          <th>Key Regulation(s) Satisfied</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>ForgeRock CIAM</td><td class="mono">Identity DS</td><td>ForgeRock (Ping)</td><td>PSD2 SCA, FAPI 2.0, DORA Art. 9</td></tr>
-        <tr><td>Entra ID</td><td class="mono">Identity DS</td><td>Microsoft</td><td>SOX §404, PCI-DSS 4.0 r8, DORA Art. 9</td></tr>
-        <tr><td>Okta Workforce</td><td class="mono">Identity DS / SaaS PEP</td><td>Okta</td><td>DORA Art. 28, SOX §404, FFIEC Outsourcing</td></tr>
-        <tr><td>SPIRE</td><td class="mono">Workload Identity DS</td><td>SPIRE + Tetrate support</td><td>DORA Art. 9, NIST 800-207 §3.1.3</td></tr>
-        <tr><td>Open Policy Agent</td><td class="mono">Policy Engine</td><td>OPA + Styra DAS</td><td>SOX §404, DORA Art. 6</td></tr>
-        <tr><td>Policy Administrator</td><td class="mono">Policy Administrator</td><td>Styra DAS + GitOps</td><td>SOX §404, DORA Art. 8</td></tr>
-        <tr><td>Kong + Authlete</td><td class="mono">API PEP</td><td>Kong Enterprise + Authlete</td><td>FAPI 2.0, PSD2, UK OBIE, Berlin Group, Brazil Open Finance</td></tr>
-        <tr><td>Istio Service Mesh</td><td class="mono">East-West PEP</td><td>Istio (Tetrate)</td><td>DORA Art. 9, NIST §3.1.2</td></tr>
-        <tr><td>Zscaler Private Access</td><td class="mono">User-to-App PEP</td><td>Zscaler</td><td>PCI-DSS 4.0 r7, DORA Art. 9, MAS TRM</td></tr>
-        <tr><td>CyberArk PAM</td><td class="mono">Privileged PEP</td><td>CyberArk</td><td>SWIFT CSCF 1.2/5.1/6.4, SOX §404, PCI-DSS 4.0 r7/8.6</td></tr>
-        <tr><td>Vault + HSM</td><td class="mono">Supporting Infra / PKI DS</td><td>HashiCorp Vault + nCipher</td><td>PCI-DSS 4.0 r3/4, FIPS 140-3, DORA Art. 9, eIDAS 2</td></tr>
-        <tr><td>Splunk ES + Snowflake</td><td class="mono">Activity Log / SIEM DS</td><td>Splunk + Snowflake</td><td>SOX §404, DORA Arts. 10&ndash;11, PCI-DSS 4.0 r10</td></tr>
-        <tr><td>OpenTelemetry</td><td class="mono">Activity Log DS</td><td>OTel + Dynatrace</td><td>DORA Art. 10, FFIEC Ops</td></tr>
-        <tr><td>Wiz + Tanium</td><td class="mono">CDM DS</td><td>Wiz + Tanium</td><td>DORA Art. 9, PCI-DSS 4.0 r11, CISA ZTMM</td></tr>
-        <tr><td>Venafi + AWS PCA</td><td class="mono">PKI DS</td><td>Venafi + AWS PCA</td><td>eIDAS 2, PCI-DSS 4.0 r4, DORA Art. 9</td></tr>
-        <tr><td>Immuta</td><td class="mono">Data Access Policy DS</td><td>Immuta</td><td>GDPR, EU AI Act, BCBS 239</td></tr>
-        <tr><td>Netskope SSE</td><td class="mono">SaaS / Egress PEP</td><td>Netskope</td><td>DORA Art. 28, GDPR, PCI-DSS 4.0 r12.8</td></tr>
-        <tr><td>Broadcom AAM (z/OS)</td><td class="mono">Mainframe PEP</td><td>Broadcom</td><td>SOX §404, PCI-DSS 4.0</td></tr>
-        <tr><td>Featurespace ARIC</td><td class="mono">Risk DS</td><td>Featurespace</td><td>PSD2 TRA, 5/6AMLD, FFIEC BSA</td></tr>
-        <tr><td>AI Gateway PEP</td><td class="mono">PEP (AI traffic)</td><td>In-house + Netskope AI</td><td>EU AI Act, DORA Art. 28, GDPR</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Regulatory coverage heatmap &mdash; component &times; obligation</h3>
-  <p>The shading indicates the intensity of regulatory mapping: a dark cell means the component is directly and materially load-bearing for that regulation; mid-shade means it contributes evidence; light means it participates tangentially. This view helps the ARB confirm there is no single regulation without redundant coverage and no orphaned component whose regulatory role is unclear.</p>
-
-  <div class="heatmap-wrap">
-    <table class="heatmap" aria-label="Regulatory coverage matrix">
-      <thead>
-        <tr>
-          <th class="first-col">Component</th>
-          <th>PSD2 / SCA</th>
-          <th>FAPI 2.0</th>
-          <th>DORA</th>
-          <th>SOX §404</th>
-          <th>PCI-DSS 4.0</th>
-          <th>GDPR</th>
-          <th>EU AI Act</th>
-          <th>SWIFT CSCF</th>
-          <th>FFIEC / MAS</th>
-          <th>NIST 800-207</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><th>ForgeRock CIAM</th>           <td class="c3">■■■</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td></tr>
-        <tr><th>Entra ID</th>                <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c0">·</td><td class="c1">■</td><td class="c2">■■</td><td class="c3">■■■</td></tr>
-        <tr><th>Okta Workforce</th>          <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c2">■■</td></tr>
-        <tr><th>SPIRE</th>                   <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td></tr>
-        <tr><th>Open Policy Agent</th>       <td class="c1">■</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c3">■■■</td></tr>
-        <tr><th>Policy Administrator</th>    <td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c0">·</td><td class="c3">■■■</td></tr>
-        <tr><th>Kong + Authlete</th>         <td class="c3">■■■</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td></tr>
-        <tr><th>Istio Service Mesh</th>      <td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td><td class="c3">■■■</td></tr>
-        <tr><th>Zscaler Private Access</th>  <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c2">■■</td></tr>
-        <tr><th>CyberArk PAM</th>            <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c2">■■</td></tr>
-        <tr><th>Vault + HSM</th>             <td class="c1">■</td><td class="c1">■</td><td class="c2">■■</td><td class="c1">■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td></tr>
-        <tr><th>Splunk + Snowflake</th>      <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c1">■</td><td class="c2">■■</td><td class="c2">■■</td><td class="c2">■■</td></tr>
-        <tr><th>OpenTelemetry</th>           <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c1">■</td></tr>
-        <tr><th>Wiz + Tanium</th>            <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c2">■■</td><td class="c2">■■</td></tr>
-        <tr><th>Venafi + AWS PCA</th>        <td class="c2">■■</td><td class="c2">■■</td><td class="c2">■■</td><td class="c0">·</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c0">·</td><td class="c1">■</td></tr>
-        <tr><th>Immuta</th>                  <td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td><td class="c1">■</td><td class="c3">■■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td></tr>
-        <tr><th>Netskope SSE</th>            <td class="c0">·</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c1">■</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td></tr>
-        <tr><th>Broadcom AAM (z/OS)</th>     <td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c3">■■■</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c1">■</td></tr>
-        <tr><th>Featurespace ARIC</th>       <td class="c3">■■■</td><td class="c0">·</td><td class="c1">■</td><td class="c0">·</td><td class="c0">·</td><td class="c1">■</td><td class="c2">■■</td><td class="c0">·</td><td class="c3">■■■</td><td class="c1">■</td></tr>
-        <tr><th>AI Gateway PEP</th>          <td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td><td class="c3">■■■</td><td class="c0">·</td><td class="c0">·</td><td class="c2">■■</td></tr>
-      </tbody>
-    </table>
-    <div class="heatmap-scale">
-      <span class="sw" style="background:#FFFFFF;"></span><span>None</span>
-      <span class="sw" style="background:#F1ECFB;"></span><span>Tangential</span>
-      <span class="sw" style="background:#E0D4F5;"></span><span>Contributory</span>
-      <span class="sw" style="background:#5B21B6;"></span><span>Load-bearing</span>
-      <span style="margin-left:auto;">Hover a row to highlight the component</span>
-    </div>
-  </div>
-
-  <h3>AI use-case risk matrix &mdash; false-positive tolerance vs HITL intensity</h3>
-  <p>Each of the six AI use cases from &sect;09 plotted by how much false-positive latitude the use case allows (x-axis) against how tightly humans supervise its outputs (y-axis). The upper-left quadrant (low FP tolerance, heavy HITL) is where regulated decisions live; the lower-right (high FP tolerance, light HITL) is where suggestion-only tools sit.</p>
-
-  <div class="matrix" aria-label="AI use-case risk matrix">
-    <div class="matrix-grid">
-      <div style="left: 25%; top: 18%;"  data-label="9.3 Fraud / AML">3</div>
-      <div style="left: 35%; top: 30%;"  data-label="9.2 Adaptive auth">2</div>
-      <div style="left: 45%; top: 45%;"  data-label="9.1 UEBA">1</div>
-      <div style="left: 72%; top: 58%;"  data-label="9.4 SOC copilot">4</div>
-      <div style="left: 82%; top: 72%;"  data-label="9.6 Vuln discovery">6</div>
-      <div style="left: 32%; top: 72%;"  data-label="9.5 Policy drafting">5</div>
-    </div>
-  </div>
-</section>
-
-<!-- ========================================================= -->
 <section id="open">
   <div class="eyebrow">Section 11</div>
   <h2><span class="num" aria-hidden="true">&sect;11</span> Open questions and recommended PoCs</h2>
@@ -3864,11 +3717,6 @@ audit := {
 
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <section aria-labelledby="about-author">
-      <h4 id="about-author">About the author</h4>
-      <p>Written by James Buckett as a worked example for the security and platform community. I publish reference architectures that trade marketing polish for concrete decisions &mdash; named vendors, cited regulations, actual SLOs, and honest analogues where public case studies don't exist.</p>
-      <p>Found an error, a better analogue, or a disagreement worth airing? That's the whole point &mdash; open an issue on GitHub or reach out on LinkedIn.</p>
-    </section>
     <section aria-labelledby="feedback">
       <h4 id="feedback">Feedback &amp; corrections</h4>
       <ul>
@@ -4161,11 +4009,6 @@ audit := {
         ta.remove();
       }
     }
-
-    // Share: copy-link button in the masthead
-    document.querySelectorAll('[data-copy-url]').forEach(btn => {
-      btn.addEventListener('click', () => copy(location.href.split('#')[0], btn.parentElement));
-    });
 
     // Permalink buttons next to each sectioned h2
     document.querySelectorAll('main section[id] > h2').forEach(h2 => {
