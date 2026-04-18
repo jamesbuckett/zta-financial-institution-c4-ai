@@ -3,8 +3,56 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Zero Trust Architecture submission to the Architecture Review Board: C4 model mapped to NIST SP 800-207 for a multi-regional retail and commercial bank." />
-<title>Zero Trust Architecture — ARB Submission</title>
+<meta name="description" content="A worked reference architecture: how a multi-regional bank maps the C4 model to NIST SP 800-207 — with OPA policies, FAPI 2.0 APIs, SPIFFE identity and DORA-aligned controls." />
+<meta name="author" content="James Buckett" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#0F3460" />
+<link rel="canonical" href="https://jamesbuckett.github.io/zta-financial-institution-c4-ai/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%230F3460'/%3E%3Ctext x='12' y='16' font-family='system-ui,sans-serif' font-size='14' font-weight='700' text-anchor='middle' fill='%23fff'%3EZ%3C/text%3E%3C/svg%3E" type="image/svg+xml" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Zero Trust Architecture for Banks — C4 + NIST 800-207" />
+<meta property="og:description" content="A worked reference architecture: how a multi-regional bank maps the C4 model to NIST SP 800-207 — with OPA policies, FAPI 2.0 APIs, SPIFFE identity and DORA-aligned controls." />
+<meta property="og:url" content="https://jamesbuckett.github.io/zta-financial-institution-c4-ai/" />
+<meta property="og:site_name" content="James Buckett — Reference Architectures" />
+<meta property="og:locale" content="en_GB" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@jamesbuckett" />
+<meta name="twitter:title" content="Zero Trust Architecture for Banks — C4 + NIST 800-207" />
+<meta name="twitter:description" content="A worked reference architecture: how a multi-regional bank maps the C4 model to NIST SP 800-207 — with OPA policies, FAPI 2.0 APIs, SPIFFE identity and DORA-aligned controls." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Zero Trust Architecture for Banks — C4 + NIST 800-207",
+  "datePublished": "2026-04-17",
+  "dateModified": "2026-04-19",
+  "inLanguage": "en-GB",
+  "proficiencyLevel": "Expert",
+  "author": {
+    "@type": "Person",
+    "name": "James Buckett",
+    "url": "https://www.linkedin.com/in/jamesbuckett",
+    "sameAs": [
+      "https://www.linkedin.com/in/jamesbuckett",
+      "https://github.com/jamesbuckett",
+      "https://twitter.com/jamesbuckett"
+    ]
+  },
+  "about": [
+    "Zero Trust Architecture",
+    "NIST SP 800-207",
+    "C4 model",
+    "Banking",
+    "FAPI 2.0",
+    "SPIFFE",
+    "DORA",
+    "Open Policy Agent"
+  ],
+  "keywords": "Zero Trust, NIST 800-207, C4 model, banking, FAPI 2.0, SPIFFE, OPA, Cedar, DORA, PSD2, SWIFT CSCF",
+  "license": "https://creativecommons.org/licenses/by/4.0/"
+}
+</script>
+<title>Zero Trust Architecture for Banks — C4 + NIST 800-207</title>
 <style>
   :root {
     --bg: #F7F7F5;
@@ -156,6 +204,141 @@
   a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 150ms ease; }
   a:hover { border-bottom-color: var(--accent); }
 
+  /* Accessibility utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0);
+    white-space: nowrap; border: 0;
+  }
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: var(--s4);
+    background: var(--accent);
+    color: #fff;
+    padding: var(--s3) var(--s4);
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 1000;
+    border-bottom: none;
+  }
+  .skip-link:focus-visible {
+    top: var(--s3);
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  /* Pedagogical framing banner */
+  .framing {
+    background: var(--accent-soft);
+    border-bottom: 1px solid var(--border);
+    color: var(--accent-ink);
+  }
+  .framing-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: var(--s3) var(--s6);
+    font-size: 13px;
+    line-height: 1.55;
+    display: flex;
+    align-items: baseline;
+    gap: var(--s3);
+  }
+  .framing-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  :root[data-theme="dark"] .framing { color: var(--text); }
+  :root[data-theme="dark"] .framing-label { color: var(--accent); }
+
+  /* Lead paragraph strip */
+  .intro-lead {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .intro-lead-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: var(--s6) var(--s6);
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--text);
+    max-inline-size: 62ch;
+  }
+  .intro-lead-inner p { margin: 0; }
+
+  /* Reference list */
+  .ref-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--s4) 0 var(--s6);
+    border-top: 1px solid var(--border);
+  }
+  .ref-list li {
+    padding: var(--s3) 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-2);
+  }
+  .ref-list li em { color: var(--text); font-style: italic; }
+  .ref-list li a { word-break: break-word; }
+
+  /* About / feedback footer blocks */
+  .site-footer {
+    border-top: 1px solid var(--border-strong);
+    background: var(--surface);
+    margin-top: var(--s8);
+  }
+  .site-footer-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: var(--s7) var(--s6);
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--s6);
+  }
+  .site-footer h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin: 0 0 var(--s3);
+    font-weight: 600;
+  }
+  .site-footer p, .site-footer li { color: var(--text-2); font-size: 14px; line-height: 1.6; }
+  .site-footer ul { list-style: none; padding: 0; margin: 0; }
+  .site-footer ul li { padding: var(--s2) 0; }
+  .site-footer-meta {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: var(--s4) var(--s6);
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--s3);
+  }
+  @media (max-width: 900px) {
+    .site-footer-inner { grid-template-columns: 1fr; gap: var(--s5); }
+  }
+
   /* Header */
   .masthead {
     border-bottom: 1px solid var(--border-strong);
@@ -219,6 +402,67 @@
   .byline-social a:hover { color: var(--accent); background: var(--accent-soft); }
   .byline-social a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .byline-social svg { width: 14px; height: 14px; display: block; }
+
+  /* Share row */
+  .share-row { margin-top: var(--s2); }
+  .share-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: var(--s2);
+    vertical-align: -3px;
+  }
+  .share-links a,
+  .share-links button {
+    color: var(--text-3);
+    display: inline-flex;
+    border: none;
+    background: none;
+    padding: 2px;
+    border-radius: 3px;
+    cursor: pointer;
+    font: inherit;
+    transition: color 180ms ease, background 180ms ease;
+  }
+  .share-links a:hover,
+  .share-links button:hover { color: var(--accent); background: var(--accent-soft); }
+  .share-links a:focus-visible,
+  .share-links button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .share-links svg { width: 14px; height: 14px; display: block; }
+  .share-links .copied {
+    position: absolute;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    margin-top: -22px;
+    margin-left: -12px;
+    pointer-events: none;
+    letter-spacing: 0.08em;
+  }
+
+  /* Per-section permalink */
+  section h2 { position: relative; }
+  .permalink {
+    display: inline-flex;
+    align-items: center;
+    margin-left: var(--s3);
+    color: var(--text-3);
+    opacity: 0;
+    transition: opacity 180ms ease, color 180ms ease;
+    border: none;
+    padding: 2px;
+    vertical-align: 4px;
+  }
+  .permalink:hover { color: var(--accent); background: var(--accent-soft); border-radius: 3px; }
+  .permalink:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
+  section:hover .permalink,
+  section:focus-within .permalink { opacity: 1; }
+  .permalink svg { width: 14px; height: 14px; display: block; }
+  @media (max-width: 900px) {
+    .permalink { opacity: 1; }
+  }
 
   /* Attribute strip */
   .attrs {
@@ -1778,6 +2022,15 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="framing" role="note" aria-label="About this document">
+  <div class="framing-inner">
+    <span class="framing-label">Educational reference</span>
+    <span>A worked-example Architecture Review Board submission showing how a multi-regional bank could map the C4 model to NIST SP&nbsp;800-207. This is a teaching artefact published for the security and platform community — not an actual filing, and no real bank, vendor relationship or regulatory submission is described. Shared under CC&nbsp;BY&nbsp;4.0.</span>
+  </div>
+</div>
+
 <header class="masthead">
   <button type="button" class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -1785,14 +2038,13 @@
   </button>
   <div class="masthead-inner">
     <div>
-      <div class="mark"><span class="mark-square"></span> ARB Submission &middot; Document ZTA-2026-001 &middot; Restricted</div>
+      <div class="mark"><span class="mark-square"></span> ARB Submission &middot; Document ZTA-2026-001</div>
       <h1>Zero Trust Architecture <br/><span>for a Multi-Regional Retail &amp; Commercial Bank</span></h1>
     </div>
     <div class="meta">
-      <div><b>Classification</b> &nbsp;Restricted &mdash; ARB Only</div>
-      <div><b>Author</b> &nbsp;Security Solutions Architecture</div>
       <div><b>Version</b> &nbsp;1.0 &middot; 2026-04-17</div>
       <div><b>Framework</b> &nbsp;C4 &times; NIST SP 800-207</div>
+      <div><b>Licence</b> &nbsp;<a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> &mdash; share with attribution</div>
       <div class="byline">
         <b>By</b> &nbsp;James Buckett &middot; Product Manager
         <span class="byline-social">
@@ -1807,6 +2059,20 @@
           </a>
         </span>
       </div>
+      <div class="share-row">
+        <b>Share</b>
+        <span class="share-links">
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fjamesbuckett.github.io%2Fzta-financial-institution-c4-ai%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="https://twitter.com/intent/tweet?text=Zero%20Trust%20Architecture%20for%20Banks%20%E2%80%94%20C4%20%2B%20NIST%20800-207&amp;url=https%3A%2F%2Fjamesbuckett.github.io%2Fzta-financial-institution-c4-ai%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on X">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+          </a>
+          <button type="button" class="share-copy" aria-label="Copy link to this page" data-copy-url>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </span>
+      </div>
     </div>
   </div>
 </header>
@@ -1817,6 +2083,12 @@
     <div><span class="attr-label">Population</span><span class="attr-value">80k staff &middot; 25M retail &middot; 400k corporate</span></div>
     <div><span class="attr-label">Jurisdictions</span><span class="attr-value">EU &middot; UK &middot; US &middot; APAC</span></div>
     <div><span class="attr-label">Quality Attributes</span><span class="attr-value">Secure &middot; Auditable &middot; Observable</span></div>
+  </div>
+</div>
+
+<div class="intro-lead">
+  <div class="intro-lead-inner">
+    <p>A worked reference architecture: how a multi-regional bank maps the C4 model to NIST SP&nbsp;800-207 &mdash; with OPA and Cedar policies, FAPI&nbsp;2.0 APIs, SPIFFE workload identity, DORA-aligned controls, and 20 named components mapped to concrete regulatory obligations. New to long-form architecture docs? Start with the <a href="#models">mental models</a>, browse the <a href="#scenarios">scenario gallery</a>, and keep the <a href="#glossary">glossary</a> open in a second tab.</p>
   </div>
 </div>
 
@@ -1839,25 +2111,30 @@
     <li><a href="#models">Mental models</a></li>
     <li><a href="#scenarios">Scenario gallery</a></li>
     <li><a href="#glossary">Glossary</a></li>
+    <li><a href="#references">References</a></li>
   </ol>
 </aside>
 
-<main>
+<main id="main">
 
 <!-- ========================================================= -->
 <section id="executive">
   <div class="eyebrow">Section 01</div>
-  <h2><span class="num">&sect;01</span> Executive summary</h2>
+  <h2><span class="num" aria-hidden="true">&sect;01</span> Executive summary</h2>
 
-  <p>The Group (hereafter <strong>the Bank</strong>) operates across the EU, UK, US and APAC with ~80,000 employees, ~25&nbsp;million retail customers, ~400,000 corporate clients and a hybrid estate spanning <code>z/OS</code>, VMware, AWS (primary), Azure, on-prem Kubernetes and ~1,200 SaaS tenants. Implicit network trust is no longer defensible against credential theft, lateral movement and supply-chain compromise. Regulators (DORA, PRA SS1/21 and SS2/21, FFIEC AIO, MAS TRM, HKMA SA-2, APRA CPS 234) now expect continuous, identity-centric controls with demonstrable evidence. This submission proposes a NIST SP&nbsp;800-207-aligned Zero Trust Architecture (ZTA) centred on a distributed Policy Engine (PE), a policy-as-code Policy Administrator (PA) and a heterogeneous mesh of Policy Enforcement Points (PEPs), fed by a normalised signal plane (identity, device posture, threat intel, UEBA, data classification, transactional risk).</p>
+  <p>Implicit network trust is no longer defensible against credential theft, lateral movement and supply-chain compromise. Regulators &mdash; <abbr title="Digital Operational Resilience Act (EU 2022/2554)">DORA</abbr>, PRA SS1/21 and SS2/21, FFIEC AIO, MAS TRM, HKMA SA-2, APRA CPS 234 &mdash; now expect continuous, identity-centric controls with demonstrable evidence rather than perimeter hygiene and annual attestations.</p>
+
+  <p>The Group (hereafter <strong>the Bank</strong>) operates across the EU, UK, US and APAC with ~80,000 employees, ~25&nbsp;million retail customers, ~400,000 corporate clients and a hybrid estate spanning <code>z/OS</code>, VMware, AWS (primary), Azure, on-prem Kubernetes and ~1,200 SaaS tenants. That scale, and the brownfield coexistence it forces, shape every design decision that follows.</p>
+
+  <p>This submission proposes a <a href="#glossary"><abbr title="National Institute of Standards and Technology Special Publication 800-207, Zero Trust Architecture (August 2020)">NIST SP&nbsp;800-207</abbr></a>-aligned Zero Trust Architecture (ZTA) centred on a distributed Policy Engine (<abbr title="Policy Engine &mdash; the PDP that evaluates the trust algorithm">PE</abbr>), a policy-as-code Policy Administrator (<abbr title="Policy Administrator &mdash; compiles, signs and publishes policy bundles to the PE fleet">PA</abbr>) and a heterogeneous mesh of Policy Enforcement Points (<abbr title="Policy Enforcement Points &mdash; API gateways, service-mesh sidecars, ZTNA, CASB, PAM brokers, database proxies, mainframe adapters, AI gateways">PEPs</abbr>), fed by a normalised signal plane (identity, device posture, threat intel, UEBA, data classification, transactional risk).</p>
 
   <p>Core design decisions:</p>
   <ol>
-    <li><strong>Identity as the control plane.</strong> Workforce on Microsoft Entra ID federated with Okta Workforce; customers on ForgeRock CIAM with FAPI&nbsp;2.0, DPoP-bound tokens and FIDO2 passkeys. Workload identity via SPIFFE/SPIRE issuing short-lived X.509 and JWT SVIDs to Kubernetes, VMs and serverless, bridged to <code>z/OS</code> via RACF digital-certificate mapping and a Kerberos-to-OIDC identity gateway.</li>
+    <li><strong>Identity as the control plane.</strong> Workforce on Microsoft Entra ID federated with Okta Workforce; customers on ForgeRock CIAM with <abbr title="Financial-grade API 2.0 Security Profile (OpenID Foundation)">FAPI&nbsp;2.0</abbr>, <abbr title="Demonstrating Proof-of-Possession at the Application Layer (RFC 9449)">DPoP</abbr>-bound tokens and FIDO2 passkeys. Workload identity via <abbr title="Secure Production Identity Framework For Everyone">SPIFFE</abbr>/SPIRE issuing short-lived X.509 and JWT <abbr title="SPIFFE Verifiable Identity Document">SVIDs</abbr> to Kubernetes, VMs and serverless, bridged to <code>z/OS</code> via RACF digital-certificate mapping and a Kerberos-to-OIDC identity gateway.</li>
     <li><strong>Decoupled AuthN and AuthZ.</strong> Authentication assertions (OIDC ID Tokens, WebAuthn/CTAP2) are separated from fine-grained authorisation decisions evaluated by Open Policy Agent (OPA) and AWS Cedar at PEPs, using the <em>AuthZEN</em> wire protocol between PDP and PEP for interoperability across vendors.</li>
     <li><strong>FAPI 2.0 for every high-assurance API.</strong> PSD2 SCA dynamic linking is implemented through signed JWS request objects and <code>cnf</code>-bound access tokens; Open Banking endpoints are hardened against the UK OBIE, Berlin Group NextGenPSD2 and Brazil Open Finance profiles, with mTLS client authentication.</li>
     <li><strong>Service mesh with mTLS everywhere.</strong> Istio in AWS EKS and on-prem K8s; HashiCorp Consul bridges VM brownfield. Every east-west hop is mutually authenticated with SPIFFE SVIDs rotated every 60 minutes.</li>
-    <li><strong>Privileged and break-glass discipline.</strong> CyberArk-driven PAM with just-in-time elevation, session recording and dual control; SWIFT Alliance Access, Payments Hub and card-issuing HSMs sit inside a CSCF&nbsp;v2024-compliant <em>Secure Zone</em> enforced by dedicated PEPs.</li>
+    <li><strong>Privileged and break-glass discipline.</strong> CyberArk-driven <abbr title="Privileged Access Management">PAM</abbr> with just-in-time elevation, session recording and dual control; SWIFT Alliance Access, Payments Hub and card-issuing HSMs sit inside a <abbr title="SWIFT Customer Security Controls Framework v2024">CSCF&nbsp;v2024</abbr>-compliant <em>Secure Zone</em> enforced by dedicated PEPs.</li>
     <li><strong>AI in the loop, not in control.</strong> UEBA, adaptive authentication, fraud/AML monitoring, SOC copiloting and policy-as-code review augment humans but never auto-remediate against customers. For red-team and SAST/DAST of the ZTA itself we recommend Anthropic's <strong>Claude Mythos Preview</strong> (restricted Project Glasswing preview, April 2026), with Claude Opus&nbsp;4.7 on AWS Bedrock as the generally-available fallback.</li>
   </ol>
 
@@ -1920,7 +2197,7 @@
 <!-- ========================================================= -->
 <section id="assumptions">
   <div class="eyebrow">Section 02</div>
-  <h2><span class="num">&sect;02</span> Assumptions &amp; scope</h2>
+  <h2><span class="num" aria-hidden="true">&sect;02</span> Assumptions &amp; scope</h2>
 
   <p>The design assumes a 36-month transformation window with brownfield coexistence throughout. The following assumptions materially shape the architecture; any change to these invalidates the recommendations that follow.</p>
 
@@ -1944,7 +2221,7 @@
 <!-- ========================================================= -->
 <section id="l1">
   <div class="eyebrow">C4 Level 1</div>
-  <h2><span class="num">&sect;03</span> Context &mdash; enterprise, people, counterparties</h2>
+  <h2><span class="num" aria-hidden="true">&sect;03</span> Context &mdash; enterprise, people, counterparties</h2>
 
   <p>At Level 1 the Bank is treated as a single logical system surrounded by untrusted actors. Every arrow crosses a trust boundary; no network segment, including the corporate LAN, is trusted by default (NIST&nbsp;800-207 §2.1 tenet&nbsp;4, which denies implicit trust from location).</p>
 
@@ -1952,6 +2229,7 @@
     <div class="figure-caption"><span>Figure 1 &mdash; Enterprise context</span><b>C4 L1</b></div>
     <div class="figure-body">
       <svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="C4 Level 1 context diagram">
+        <desc>C4 Level 1 enterprise context. At the centre sits The Bank — the ZTA-governed estate spanning z/OS, AWS, Azure, VMware, Kubernetes and SaaS, serving retail, corporate, markets, payments and cards. Surrounding it are eight external actors: retail customers (mobile, web, ATM, branch); corporate clients (treasury portals and host-to-host); regulators (PRA, FCA, ECB, OCC, MAS, HKMA); the workforce of ~80,000 employees and contractors; adversaries (nation-state, ransomware, insider); Open Banking third-party providers (AISPs, PISPs, CBPIIs); SWIFT and the card networks (Visa, Mastercard); and ~1,200 SaaS and cloud providers. Every arrow crosses an untrusted-by-default trust boundary drawn in dashed warning colour around the estate, per NIST 800-207 §2.1.</desc>
         <defs>
           <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
             <path d="M 0 0 L 10 5 L 0 10 z" fill="#0F3460"/>
@@ -2031,7 +2309,7 @@
 <!-- ========================================================= -->
 <section id="l2">
   <div class="eyebrow">C4 Level 2</div>
-  <h2><span class="num">&sect;04</span> Container &mdash; NIST 800-207 logical overlay</h2>
+  <h2><span class="num" aria-hidden="true">&sect;04</span> Container &mdash; NIST 800-207 logical overlay</h2>
 
   <p>Level 2 places concrete technology behind each NIST 800-207 logical role. The core triad (PE, PA, PEP) is instantiated as a distributed and horizontally scaled control plane; the Data Sources feeding the PE are a deliberate, named catalogue rather than an ad-hoc signal pool.</p>
 
@@ -2039,6 +2317,7 @@
     <div class="figure-caption"><span>Figure 2 &mdash; Logical container view with NIST 800-207 overlay</span><b>C4 L2</b></div>
     <div class="figure-body">
       <svg viewBox="0 0 1040 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="C4 Level 2 container diagram">
+        <desc>C4 Level 2 logical containers with the NIST 800-207 overlay. Four groups are shown. The NIST 800-207 Control Plane (centre-top) contains the Policy Engine (OPA + Cedar fleet acting as PDP), the Policy Administrator (signed bundle publisher), and the Trust Algorithm with continuous scoring fed by UEBA, device posture and transactional risk, communicating with PEPs over the AuthZEN wire protocol. The Data Sources group (left) feeds the PE with eight signal streams: CDM (Tanium, Wiz, ServiceNow CMDB); threat intelligence (Recorded Future, MISP); activity-log SIEM (Splunk ES, Sentinel, Snowflake); identity stores (Entra, Okta, ForgeRock, SPIRE); PKI (Venafi, AWS PCA, SPIFFE); industry compliance (ServiceNow GRC, Archer); data-access policy (Immuta, Privacera); fraud and AML scoring (Featurespace, NICE Actimize). The Policy Enforcement Points group (right) lists eight PEP classes: API Gateway (Kong, Apigee, Authlete FAPI); service-mesh sidecar (Istio Envoy, Consul Connect); ZTNA/SASE (Zscaler ZPA, Netskope); mainframe adapter (Broadcom AAM, Vanguard); database proxy (CyberArk SDB, Satori); SaaS CASB (Netskope, Zscaler ZIA); PAM session broker (CyberArk PSM, BeyondTrust); and the AI Gateway enforcing prompt-injection and egress controls. Enterprise Resources (centre-bottom) are the subjects, assets and resources being protected — including a dedicated Payments Secure Zone that meets SWIFT CSCF v2024 with its own PEPs, dual-control and WORM audit.</desc>
         <defs>
           <style>
             .grp { fill: #FAFAF8; stroke: #0A0A0A; stroke-width: 1; }
@@ -2187,7 +2466,7 @@
 <!-- ========================================================= -->
 <section id="l3">
   <div class="eyebrow">C4 Level 3</div>
-  <h2><span class="num">&sect;05</span> Component &mdash; two representative flows</h2>
+  <h2><span class="num" aria-hidden="true">&sect;05</span> Component &mdash; two representative flows</h2>
 
   <h3>Flow A &mdash; Retail customer logging in to Mobile Banking and initiating a payment</h3>
 
@@ -2195,6 +2474,7 @@
     <div class="figure-caption"><span>Figure 3 &mdash; Mobile Banking payment (happy-path)</span><b>C4 L3 &middot; Flow A</b></div>
     <div class="figure-body">
       <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flow A sequence">
+        <desc>Sequence diagram for Flow A — a retail customer logs in to the mobile banking app and initiates a payment. Lanes from left to right: the Mobile app, the CIAM (ForgeRock), the API Gateway (Kong + Authlete FAPI acting as PEP), the Policy Engine (OPA + Cedar), the Data Sources (UEBA, fraud scoring, device posture), and the Payments service. The happy path shows: WebAuthn passkey login with device-bound DPoP key; FAPI 2.0 authorisation with PAR and JARM; access-token issuance bound to the client key (cnf); every request from the app arriving at the API Gateway PEP which calls the PE over AuthZEN with identity, device, session and transaction context; PE consulting Data Sources for fraud and UEBA scores; a policy decision (allow, step-up, or deny) returning within the P99 &lt; 10 ms budget; and the call proceeding to the Payments service only after an allow. A step-up branch shows a high-value or high-risk transaction triggering PSD2 SCA dynamic linking with a signed JWS request object before the PE re-evaluates.</desc>
         <defs>
           <style>
             .lane { fill: #fff; stroke: #0A0A0A; stroke-width: 1; }
@@ -2362,7 +2642,7 @@
 <!-- ========================================================= -->
 <section id="l4">
   <div class="eyebrow">C4 Level 4</div>
-  <h2><span class="num">&sect;06</span> Code &mdash; policy-evaluation example (OPA Rego)</h2>
+  <h2><span class="num" aria-hidden="true">&sect;06</span> Code &mdash; policy-evaluation example (OPA Rego)</h2>
 
   <p>The following is a simplified fragment of the policy that fires in step&nbsp;6 of Flow&nbsp;A. It is illustrative, not production-ready; the real policy is split into reusable modules under <code>policies/retail/payments/</code> with unit tests (<code>opa test</code>) and a policy-bundle signer.</p>
 
@@ -2446,9 +2726,14 @@ audit := {
 <!-- ========================================================= -->
 <section id="catalogue">
   <div class="eyebrow">Section 07</div>
-  <h2><span class="num">&sect;07</span> Component catalogue</h2>
+  <h2><span class="num" aria-hidden="true">&sect;07</span> Component catalogue</h2>
 
-  <p>Each component is summarised against the five-point template: rationale/tenet, NIST role, vendor options, regulatory alignment and real-world reference. Where no financial-institution public case exists we name the closest analogue rather than fabricate.</p>
+  <p>Each component is summarised against the five-point template: rationale/tenet, NIST role, vendor options, regulatory alignment and real-world reference.</p>
+
+  <div class="callout">
+    <span class="callout-label">A note on references</span>
+    Banks rarely publish detailed security-architecture case studies. Where no financial-institution public case exists we cite the closest disclosed analogue &mdash; vendor reference architectures, neighbouring-sector implementations or CNCF/vendor talks &mdash; rather than fabricate a customer logo. "Closest analogue: X" in the Reference field means just that.
+  </div>
 
   <div class="filter-bar" role="toolbar" aria-label="Filter components by NIST category">
     <span class="filter-label">Filter by NIST role</span>
@@ -2710,7 +2995,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="cross">
   <div class="eyebrow">Section 08</div>
-  <h2><span class="num">&sect;08</span> Cross-cutting concerns</h2>
+  <h2><span class="num" aria-hidden="true">&sect;08</span> Cross-cutting concerns</h2>
 
   <h3>8.1 &nbsp; Human identity</h3>
   <p>Three distinct identity populations are served by three specialised planes: <strong>workforce</strong> (Entra ID + Okta Workforce), <strong>customer</strong> (ForgeRock CIAM), and <strong>partner B2B</strong> (Keycloak-based federation broker accepting SAML, OIDC and SPIFFE). Workforce and CIAM are deliberately <em>not</em> collapsed &mdash; they have incompatible regulatory envelopes (GDPR data-subject rights for customers, employment law for staff), different scale characteristics (25M customers vs 80k staff), and different UX budgets (friction-averse retail vs strong-MFA workforce). A shared signal layer (UEBA, device trust) is normalised into AuthZEN context before reaching the PE. Third-party partners federate via the B2B broker using SAML 2.0 for legacy counterparties and OIDC FAPI-CIBA for decoupled approval flows (for example, a corporate treasurer initiating a payment approved by the CFO on a separate device).</p>
@@ -2755,7 +3040,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="ai">
   <div class="eyebrow">Section 09</div>
-  <h2><span class="num">&sect;09</span> AI / ML use-case catalogue</h2>
+  <h2><span class="num" aria-hidden="true">&sect;09</span> AI / ML use-case catalogue</h2>
 
   <p>AI is not a cross-cutting sprinkle. Each use case below specifies the signal consumed, the decision informed, the NIST 800-207 component augmented, the false-positive tolerance and the human-in-the-loop control. Across all use cases the <strong>AI Gateway PEP</strong> enforces prompt-injection defence (content classifiers, deterministic filters, signed system prompts) and data-egress prevention (DLP on prompts and responses).</p>
 
@@ -2825,7 +3110,7 @@ audit := {
       <div><b>Signal</b>Source code and IaC for PE, PA, custom PEPs; build artefacts; dynamic traffic captures from staging.</div>
       <div><b>Decision</b>Flags vulnerabilities, drafts proof-of-concept exploits, suggests fixes; simulates red-team scenarios against PE/PA.</div>
       <div><b>NIST component</b>Supports the threat model of the ZTA itself (§8.10) and the CDM Data Source.</div>
-      <div><b>Primary model</b><strong>Claude Mythos Preview</strong> (Anthropic, released April 2026 under <em>Project Glasswing</em>). Restricted preview for a small cohort of security partners &mdash; the Bank engages via Project Glasswing membership and runs inference either in Anthropic's secure enclave or a private preview tier of AWS Bedrock/GCP Vertex. Data residency is negotiated; prompts never leave an approved boundary. Strengths: frontier capability on adversarial reasoning across Rego, Cedar, Envoy filters and mTLS fabrics; native red-team simulation mode.</div>
+      <div><b>Primary model</b><strong>Claude Mythos Preview</strong> (Anthropic, released April 2026 under <em>Project Glasswing</em>). Gated research preview for a small cohort of security partners &mdash; the Bank engages via Project Glasswing membership and runs inference either in Anthropic's secure enclave or the Amazon Bedrock gated-preview tier. Data residency is negotiated; prompts never leave an approved boundary. Reported to have identified thousands of zero-day flaws in Anthropic's announcement, including CVE-2026-4747 (a 17-year-old FreeBSD NFS remote-code-execution vulnerability fully chained by the model autonomously). In this ZTA context, relevant strengths are adversarial reasoning across Rego, Cedar, Envoy filters and mTLS handshakes, plus a native red-team simulation mode.</div>
       <div><b>Fallback</b><strong>Claude Opus 4.7</strong> on AWS Bedrock (GA) for general SAST/DAST; open-source options (Semgrep, CodeQL, Ghidra-assisted LLM pipelines) for non-AI-accessible zones. The architecture must work without Mythos; Mythos is an amplifier.</div>
       <div><b>FP tolerance</b>High at the discovery stage (findings enter a triage queue). Low for "autonomous exploitation in production" &mdash; not permitted.</div>
       <div><b>HITL</b>Red-team engineers adjudicate findings; exploitation against non-prod only, with purple-team coordination.</div>
@@ -2845,7 +3130,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="summary">
   <div class="eyebrow">Section 10</div>
-  <h2><span class="num">&sect;10</span> Summary &mdash; component &rarr; NIST role &rarr; vendor &rarr; regulation</h2>
+  <h2><span class="num" aria-hidden="true">&sect;10</span> Summary &mdash; component &rarr; NIST role &rarr; vendor &rarr; regulation</h2>
 
   <div class="table-wrap">
     <table>
@@ -2952,7 +3237,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="open">
   <div class="eyebrow">Section 11</div>
-  <h2><span class="num">&sect;11</span> Open questions and recommended PoCs</h2>
+  <h2><span class="num" aria-hidden="true">&sect;11</span> Open questions and recommended PoCs</h2>
 
   <ol>
     <li><strong>AuthZEN interop maturity.</strong> AuthZEN is evolving; a 90-day PoC between Kong, OPA and Cedar validating a common context schema is recommended before committing to it as the wire contract.</li>
@@ -3057,7 +3342,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="models">
   <div class="eyebrow">Section 12</div>
-  <h2><span class="num">&sect;12</span> Mental models</h2>
+  <h2><span class="num" aria-hidden="true">&sect;12</span> Mental models</h2>
 
   <p>Eight operating principles sit underneath every design decision in this submission. They are deliberately framed as <em>mental models</em> rather than controls: they shape how engineers, reviewers and auditors reason about trade-offs when a written control does not yet exist or conflicts with another. Each card carries the one-line maxim we use in design reviews.</p>
 
@@ -3152,7 +3437,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="scenarios">
   <div class="eyebrow">Section 13</div>
-  <h2><span class="num">&sect;13</span> Scenario gallery</h2>
+  <h2><span class="num" aria-hidden="true">&sect;13</span> Scenario gallery</h2>
 
   <p>Six concrete situations the ZTA is designed to handle well. Each scenario traces the signals, the policy evaluation, the resulting decision and the lesson it teaches about the design. Click a scenario on the left to switch the story panel.</p>
 
@@ -3304,7 +3589,7 @@ audit := {
 <!-- ========================================================= -->
 <section id="glossary">
   <div class="eyebrow">Section 14</div>
-  <h2><span class="num">&sect;14</span> Glossary</h2>
+  <h2><span class="num" aria-hidden="true">&sect;14</span> Glossary</h2>
 
   <p>Vocabulary used throughout this submission. Terms are grouped alphabetically; acronyms are expanded where the industry form is not self-explanatory. Regulations in the scope of this ZTA are listed under their usual short form (e.g., <em>DORA</em>, <em>FAPI</em>).</p>
 
@@ -3509,12 +3794,103 @@ audit := {
   </div>
 </section>
 
+<!-- ========================================================= -->
+<section id="references">
+  <div class="eyebrow">Section 15</div>
+  <h2><span class="num" aria-hidden="true">&sect;15</span> References &amp; further reading</h2>
+
+  <p>Canonical sources for the standards, frameworks, regulations and vendor ecosystems cited throughout this document. Where an artefact is versioned, the version current at publication (2026-04-17) is referenced.</p>
+
+  <h3>15.1 &nbsp; Zero Trust &mdash; core standards and maturity models</h3>
+  <ul class="ref-list">
+    <li>NIST SP 800-207, <em>Zero Trust Architecture</em> (August 2020). <a href="https://doi.org/10.6028/NIST.SP.800-207" rel="noopener noreferrer" target="_blank">doi.org/10.6028/NIST.SP.800-207</a></li>
+    <li>NIST SP 800-207A, <em>A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Location Environments</em> (2023). <a href="https://csrc.nist.gov/pubs/sp/800/207/a/final" rel="noopener noreferrer" target="_blank">csrc.nist.gov/pubs/sp/800/207/a/final</a></li>
+    <li>CISA, <em>Zero Trust Maturity Model v2.0</em> (April 2023). <a href="https://www.cisa.gov/zero-trust-maturity-model" rel="noopener noreferrer" target="_blank">cisa.gov/zero-trust-maturity-model</a></li>
+    <li>DoD, <em>Zero Trust Reference Architecture v2.0</em> (July 2022). <a href="https://dodcio.defense.gov/Portals/0/Documents/Library/(U)ZT_RA_v2.0(U)_Sep22.pdf" rel="noopener noreferrer" target="_blank">dodcio.defense.gov &mdash; ZT RA v2.0 (PDF)</a></li>
+  </ul>
+
+  <h3>15.2 &nbsp; Regulation &amp; supervisory guidance</h3>
+  <ul class="ref-list">
+    <li>Regulation (EU) 2022/2554 &mdash; <em>Digital Operational Resilience Act (DORA)</em>. <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32022R2554" rel="noopener noreferrer" target="_blank">eur-lex.europa.eu &mdash; DORA</a></li>
+    <li>Bank of England PRA, <em>SS1/21 Operational resilience</em> and <em>SS2/21 Outsourcing and third-party risk management</em>. <a href="https://www.bankofengland.co.uk/prudential-regulation/publication/2021/march/operational-resilience-impact-tolerances-for-important-business-services-ss" rel="noopener noreferrer" target="_blank">PRA SS1/21</a> &middot; <a href="https://www.bankofengland.co.uk/prudential-regulation/publication/2021/march/outsourcing-and-third-party-risk-management-ss" rel="noopener noreferrer" target="_blank">PRA SS2/21</a></li>
+    <li>FFIEC, <em>Architecture, Infrastructure, and Operations (AIO) Booklet</em> (2021). <a href="https://ithandbook.ffiec.gov/it-booklets/architecture,-infrastructure,-and-operations/" rel="noopener noreferrer" target="_blank">ithandbook.ffiec.gov</a></li>
+    <li>MAS, <em>Technology Risk Management Guidelines</em> (2021). <a href="https://www.mas.gov.sg/regulation/guidelines/technology-risk-management-guidelines" rel="noopener noreferrer" target="_blank">mas.gov.sg &mdash; TRM</a></li>
+    <li>HKMA, <em>Supervisory Policy Manual SA-2 Outsourcing</em>. <a href="https://www.hkma.gov.hk/eng/regulatory-resources/regulatory-guides/by-subject-current-version/" rel="noopener noreferrer" target="_blank">hkma.gov.hk &mdash; SPM</a></li>
+    <li>APRA, <em>Prudential Standard CPS 234 Information Security</em> (July 2019). <a href="https://www.apra.gov.au/information-security-cps-234" rel="noopener noreferrer" target="_blank">apra.gov.au &mdash; CPS 234</a></li>
+    <li>Directive (EU) 2015/2366 &mdash; <em>PSD2</em> and the <em>RTS on SCA and CSC</em>. <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32015L2366" rel="noopener noreferrer" target="_blank">eur-lex.europa.eu &mdash; PSD2</a></li>
+    <li>PCI SSC, <em>PCI DSS v4.0.1</em> (June 2024). <a href="https://www.pcisecuritystandards.org/document_library/" rel="noopener noreferrer" target="_blank">pcisecuritystandards.org</a></li>
+    <li>SWIFT, <em>Customer Security Controls Framework v2024</em>. <a href="https://www.swift.com/myswift/customer-security-programme-csp/security-controls" rel="noopener noreferrer" target="_blank">swift.com &mdash; CSCF</a></li>
+    <li>Regulation (EU) 2024/1689 &mdash; <em>AI Act</em> (high-risk financial-services obligations). <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32024R1689" rel="noopener noreferrer" target="_blank">eur-lex.europa.eu &mdash; AI Act</a></li>
+  </ul>
+
+  <h3>15.3 &nbsp; Identity, API and workload-identity specifications</h3>
+  <ul class="ref-list">
+    <li>OpenID Foundation, <em>FAPI 2.0 Security Profile</em>. <a href="https://openid.net/specs/fapi-security-profile-2_0.html" rel="noopener noreferrer" target="_blank">openid.net &mdash; FAPI 2.0</a></li>
+    <li>OpenID Foundation, <em>FAPI-CIBA Profile</em>. <a href="https://openid.net/specs/openid-financial-api-ciba-ID1.html" rel="noopener noreferrer" target="_blank">openid.net &mdash; FAPI-CIBA</a></li>
+    <li>IETF RFC 9449 &mdash; <em>OAuth 2.0 Demonstrating Proof-of-Possession (DPoP)</em>. <a href="https://datatracker.ietf.org/doc/html/rfc9449" rel="noopener noreferrer" target="_blank">datatracker.ietf.org &mdash; RFC 9449</a></li>
+    <li>IETF RFC 9126 &mdash; <em>OAuth 2.0 Pushed Authorization Requests (PAR)</em>. <a href="https://datatracker.ietf.org/doc/html/rfc9126" rel="noopener noreferrer" target="_blank">datatracker.ietf.org &mdash; RFC 9126</a></li>
+    <li>IETF RFC 8705 &mdash; <em>OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens</em>. <a href="https://datatracker.ietf.org/doc/html/rfc8705" rel="noopener noreferrer" target="_blank">datatracker.ietf.org &mdash; RFC 8705</a></li>
+    <li>W3C, <em>Web Authentication: An API for accessing Public Key Credentials (WebAuthn) L3</em>. <a href="https://www.w3.org/TR/webauthn-3/" rel="noopener noreferrer" target="_blank">w3.org &mdash; WebAuthn L3</a></li>
+    <li>SPIFFE Project, <em>SPIFFE Specification &amp; SPIRE</em>. <a href="https://spiffe.io/docs/" rel="noopener noreferrer" target="_blank">spiffe.io/docs</a></li>
+    <li>OpenID Foundation, <em>AuthZEN Working Group &mdash; authorization API and context</em>. <a href="https://openid.net/wg/authzen/" rel="noopener noreferrer" target="_blank">openid.net &mdash; AuthZEN WG</a></li>
+  </ul>
+
+  <h3>15.4 &nbsp; Policy-as-code and supply-chain integrity</h3>
+  <ul class="ref-list">
+    <li>Open Policy Agent &mdash; documentation and the Rego language reference. <a href="https://www.openpolicyagent.org/docs/latest/" rel="noopener noreferrer" target="_blank">openpolicyagent.org/docs</a></li>
+    <li>AWS, <em>Cedar policy language reference</em>. <a href="https://docs.cedarpolicy.com/" rel="noopener noreferrer" target="_blank">docs.cedarpolicy.com</a></li>
+    <li>sigstore project &mdash; cosign, fulcio, rekor. <a href="https://www.sigstore.dev/" rel="noopener noreferrer" target="_blank">sigstore.dev</a></li>
+    <li>in-toto attestations. <a href="https://in-toto.io/" rel="noopener noreferrer" target="_blank">in-toto.io</a></li>
+    <li>SLSA, <em>Supply-chain Levels for Software Artifacts</em>. <a href="https://slsa.dev/" rel="noopener noreferrer" target="_blank">slsa.dev</a></li>
+  </ul>
+
+  <h3>15.5 &nbsp; AI security &mdash; Claude Mythos &amp; Project Glasswing</h3>
+  <ul class="ref-list">
+    <li>Anthropic, <em>Claude Mythos Preview</em> announcement (April 2026). <a href="https://red.anthropic.com/2026/mythos-preview/" rel="noopener noreferrer" target="_blank">red.anthropic.com &mdash; Mythos Preview</a></li>
+    <li>Anthropic, <em>Project Glasswing</em> &mdash; securing critical software for the AI era. <a href="https://www.anthropic.com/glasswing" rel="noopener noreferrer" target="_blank">anthropic.com/glasswing</a></li>
+    <li>Amazon Bedrock, <em>Claude Mythos Preview (gated research preview)</em>. <a href="https://aws.amazon.com/about-aws/whats-new/2026/04/amazon-bedrock-claude-mythos/" rel="noopener noreferrer" target="_blank">aws.amazon.com &mdash; Bedrock Mythos</a></li>
+    <li>NIST AI RMF &mdash; AI Risk Management Framework. <a href="https://www.nist.gov/itl/ai-risk-management-framework" rel="noopener noreferrer" target="_blank">nist.gov &mdash; AI RMF</a></li>
+  </ul>
+
+  <h3>15.6 &nbsp; Architecture notation</h3>
+  <ul class="ref-list">
+    <li>Simon Brown, <em>The C4 model for visualising software architecture</em>. <a href="https://c4model.com/" rel="noopener noreferrer" target="_blank">c4model.com</a></li>
+    <li>ISO/IEC/IEEE 42010:2022 &mdash; <em>Systems and software engineering &mdash; Architecture description</em>. <a href="https://www.iso.org/standard/74393.html" rel="noopener noreferrer" target="_blank">iso.org &mdash; 42010</a></li>
+  </ul>
+</section>
+
 </main>
 </div>
 
-<footer>
-  <div>ZTA-2026-001 &middot; Security Solutions Architecture &middot; Restricted</div>
-  <div>Version 1.0 &middot; 2026-04-17</div>
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <section aria-labelledby="about-author">
+      <h4 id="about-author">About the author</h4>
+      <p>Written by James Buckett as a worked example for the security and platform community. I publish reference architectures that trade marketing polish for concrete decisions &mdash; named vendors, cited regulations, actual SLOs, and honest analogues where public case studies don't exist.</p>
+      <p>Found an error, a better analogue, or a disagreement worth airing? That's the whole point &mdash; open an issue on GitHub or reach out on LinkedIn.</p>
+    </section>
+    <section aria-labelledby="feedback">
+      <h4 id="feedback">Feedback &amp; corrections</h4>
+      <ul>
+        <li><a href="https://github.com/jamesbuckett/zta-financial-institution-c4-ai/issues" rel="noopener noreferrer" target="_blank">GitHub issues</a></li>
+        <li><a href="https://www.linkedin.com/in/jamesbuckett" rel="noopener noreferrer" target="_blank">LinkedIn &mdash; James Buckett</a></li>
+        <li><a href="https://github.com/jamesbuckett/zta-financial-institution-c4-ai" rel="noopener noreferrer" target="_blank">Source repository</a></li>
+      </ul>
+    </section>
+    <section aria-labelledby="if-useful">
+      <h4 id="if-useful">If you found this useful</h4>
+      <ul>
+        <li><a href="#references">Jump to references</a></li>
+        <li><a href="#models">Mental models</a></li>
+        <li><a href="#scenarios">Scenario gallery</a></li>
+        <li><a href="#glossary">Glossary</a></li>
+      </ul>
+    </section>
+  </div>
+  <div class="site-footer-meta">
+    <div>ZTA-2026-001 &middot; Version 1.0 &middot; 2026-04-17</div>
+    <div>Licensed <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer" target="_blank">CC BY 4.0</a> &mdash; share with attribution</div>
+  </div>
 </footer>
 
 <script>
@@ -3759,6 +4135,52 @@ audit := {
         root.dataset.theme = 'dark';
         btn.setAttribute('aria-pressed', 'true');
       }
+    });
+  })();
+
+  // ------------ Per-section permalinks + copy-to-clipboard ------------
+  (() => {
+    const ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+    const COPIED_MS = 1400;
+
+    function flashCopied(el) {
+      const note = document.createElement('span');
+      note.className = 'copied';
+      note.textContent = 'COPIED';
+      el.appendChild(note);
+      setTimeout(() => note.remove(), COPIED_MS);
+    }
+    function copy(text, feedbackHost) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => flashCopied(feedbackHost)).catch(() => {});
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); flashCopied(feedbackHost); } catch (_) {}
+        ta.remove();
+      }
+    }
+
+    // Share: copy-link button in the masthead
+    document.querySelectorAll('[data-copy-url]').forEach(btn => {
+      btn.addEventListener('click', () => copy(location.href.split('#')[0], btn.parentElement));
+    });
+
+    // Permalink buttons next to each sectioned h2
+    document.querySelectorAll('main section[id] > h2').forEach(h2 => {
+      const id = h2.parentElement.id;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'permalink';
+      btn.setAttribute('aria-label', 'Copy link to this section');
+      btn.innerHTML = ICON;
+      btn.addEventListener('click', () => {
+        const url = location.origin + location.pathname + '#' + id;
+        history.replaceState(null, '', '#' + id);
+        copy(url, btn);
+      });
+      h2.appendChild(btn);
     });
   })();
 </script>
