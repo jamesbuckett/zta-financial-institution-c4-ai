@@ -1,4 +1,4 @@
-# Zero Trust Architecture leveraging AI to protect a Tier 1 Financial Institution
+# A Refernce Zero Trust Architecture for a Tier 1 Financial Institution
 
 ## ROLE
 You are a Senior FinTech Security Solutions Architect with 15+ years designing
