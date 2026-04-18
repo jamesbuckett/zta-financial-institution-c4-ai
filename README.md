@@ -1,4 +1,4 @@
-# A next-generation Zero Trust Architecture leveraging AI to protect a Tier 1 Financial Institution
+# Zero Trust Architecture leveraging AI to protect a Tier 1 Financial Institution
 
 ## ROLE
 You are a Senior FinTech Security Solutions Architect with 15+ years designing
