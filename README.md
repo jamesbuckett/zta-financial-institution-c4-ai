@@ -56,13 +56,13 @@ Map C4 levels to NIST 800-207 concepts as follows:
 
 ## FOR EVERY ARCHITECTURAL COMPONENT, PROVIDE
 1. **Rationale** and the specific zero-trust principle satisfied (cite NIST
-   800-207 tenet number, §2.1 items 1–7).
+   800-207 tenet number,  2.1 items 1–7).
 2. **NIST 800-207 placement** (PE / PA / PEP / specific Data Source, or
    supporting infrastructure).
 3. **Vendor options** — at least one commercial and one open-source, with a
    one-line trade-off for each (cost, lock-in, maturity, FI fit).
 4. **Regulatory alignment** — map to specific clauses: e.g., PCI-DSS 4.0
-   req 8.3 (MFA), SOX §404 (ICFR evidence), SWIFT CSCF v2024 control 1.2,
+   req 8.3 (MFA), SOX  404 (ICFR evidence), SWIFT CSCF v2024 control 1.2,
    DORA Articles 9/10/28, FFIEC AIO booklet, Basel III ORM.
 5. **Real-world reference** — cite public case studies, regulator papers, or
    vendor reference architectures. Where no public FI case exists, say so

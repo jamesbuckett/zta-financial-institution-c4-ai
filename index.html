@@ -51,6 +51,38 @@
     --max: 1280px;
   }
 
+  :root[data-theme="dark"] {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface-alt: #1A1A1A;
+    --text: #F5F5F5;
+    --text-2: #B4B8C0;
+    --text-3: #8B8F98;
+    --border: #262626;
+    --border-strong: #F5F5F5;
+    --accent: #6FA8FF;
+    --accent-soft: #16233A;
+    --accent-ink: #B8CEF0;
+    --warn: #F59E0B;
+    --warn-soft: #2A1F08;
+    --ok: #34D399;
+    --ok-soft: #0B2419;
+    --danger: #F87171;
+    --danger-soft: #2A0D14;
+    --cat-identity:  #6FA8FF;
+    --cat-identity-soft: #16233A;
+    --cat-control:   #A78BFA;
+    --cat-control-soft: #1F1530;
+    --cat-pep:       #F59E0B;
+    --cat-pep-soft:  #2A1F08;
+    --cat-data:      #38BDF8;
+    --cat-data-soft: #0A2530;
+    --cat-observe:   #34D399;
+    --cat-observe-soft: #0B2419;
+    --cat-ai:        #F87171;
+    --cat-ai-soft:   #2A0D14;
+  }
+
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
@@ -63,6 +95,61 @@
     -webkit-font-smoothing: antialiased;
     font-feature-settings: "ss01", "cv11";
   }
+
+  @media (prefers-reduced-motion: no-preference) {
+    body, .masthead, .attrs, .card, .layout, aside, section, header, footer, table, th, td, pre, code, blockquote, .tenet, .comp, .chip, .kpi, .box, .flow, .dl, .cat, .gloss, .gloss-term, .timeline-bar, .mm-card, .ai-card, .cross-card, .threat-card, .scenario, .scenario-card {
+      transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+    }
+  }
+
+  /* Theme toggle button */
+  .masthead { position: relative; }
+  .theme-toggle {
+    position: absolute;
+    top: var(--s4);
+    right: var(--s5);
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    z-index: 10;
+  }
+  .theme-toggle:hover { background: var(--surface-alt); border-color: var(--border-strong); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .theme-toggle svg { width: 18px; height: 18px; display: block; }
+  .theme-toggle .icon-sun { display: none; }
+  :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+  :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+
+  /* Dark-mode overrides for inline SVG diagrams */
+  :root[data-theme="dark"] svg .box,
+  :root[data-theme="dark"] svg .lane { fill: #141414; stroke: #F5F5F5; }
+  :root[data-theme="dark"] svg .sys,
+  :root[data-theme="dark"] svg .cp { fill: #16233A; stroke: #6FA8FF; }
+  :root[data-theme="dark"] svg .grp { fill: #1A1A1A; stroke: #F5F5F5; }
+  :root[data-theme="dark"] svg .ds { fill: #141414; stroke: #B4B8C0; }
+  :root[data-theme="dark"] svg .pep { fill: #2A1F08; stroke: #F59E0B; }
+  :root[data-theme="dark"] svg .lbl,
+  :root[data-theme="dark"] svg .lbl-h,
+  :root[data-theme="dark"] svg .lb { fill: #F5F5F5; }
+  :root[data-theme="dark"] svg .lbl-s,
+  :root[data-theme="dark"] svg .ts { fill: #B4B8C0; }
+  :root[data-theme="dark"] svg .line,
+  :root[data-theme="dark"] svg .flow,
+  :root[data-theme="dark"] svg .ar { stroke: #6FA8FF; }
+  :root[data-theme="dark"] svg .tb { stroke: #F59E0B; }
+  :root[data-theme="dark"] svg .grp-l,
+  :root[data-theme="dark"] svg .dot { fill: #6FA8FF; }
+  :root[data-theme="dark"] svg line[stroke="#0A0A0A"] { stroke: #F5F5F5; }
+  :root[data-theme="dark"] svg path[fill="#0F3460"] { fill: #6FA8FF; }
 
   ::selection { background: var(--accent); color: #fff; }
 
@@ -1673,6 +1760,10 @@
 <body>
 
 <header class="masthead">
+  <button type="button" class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg>
+  </button>
   <div class="masthead-inner">
     <div>
       <div class="mark"><span class="mark-square"></span> ARB Submission &middot; Document ZTA-2026-001 &middot; Restricted</div>
@@ -1782,13 +1873,13 @@
 
   <h3>NIST 800-207 &mdash; seven tenets driving every design decision</h3>
   <div class="tenets">
-    <div class="tenet"><div class="t-num">Tenet 01</div><b>All data sources &amp; compute services are resources</b><span>§2.1.1 &mdash; nothing is excluded by type or location.</span></div>
-    <div class="tenet"><div class="t-num">Tenet 02</div><b>All communication secured regardless of location</b><span>§2.1.2 &mdash; the corporate LAN is not trusted.</span></div>
-    <div class="tenet"><div class="t-num">Tenet 03</div><b>Access on a per-session basis</b><span>§2.1.3 &mdash; trust re-evaluated at every request.</span></div>
-    <div class="tenet"><div class="t-num">Tenet 04</div><b>Access by dynamic policy</b><span>§2.1.4 &mdash; identity, device, behaviour, environment.</span></div>
-    <div class="tenet"><div class="t-num">Tenet 05</div><b>Monitor &amp; measure integrity of owned assets</b><span>§2.1.5 &mdash; CDM feeds continuous posture.</span></div>
-    <div class="tenet"><div class="t-num">Tenet 06</div><b>Dynamic authentication &amp; strict enforcement</b><span>§2.1.6 &mdash; step-up, passkeys, device binding.</span></div>
-    <div class="tenet"><div class="t-num">Tenet 07</div><b>Collect data to improve posture</b><span>§2.1.7 &mdash; signals inform the trust algorithm.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 01</div><b>All data sources &amp; compute services are resources</b><span> 2.1.1 &mdash; nothing is excluded by type or location.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 02</div><b>All communication secured regardless of location</b><span> 2.1.2 &mdash; the corporate LAN is not trusted.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 03</div><b>Access on a per-session basis</b><span> 2.1.3 &mdash; trust re-evaluated at every request.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 04</div><b>Access by dynamic policy</b><span> 2.1.4 &mdash; identity, device, behaviour, environment.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 05</div><b>Monitor &amp; measure integrity of owned assets</b><span> 2.1.5 &mdash; CDM feeds continuous posture.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 06</div><b>Dynamic authentication &amp; strict enforcement</b><span> 2.1.6 &mdash; step-up, passkeys, device binding.</span></div>
+    <div class="tenet"><div class="t-num">Tenet 07</div><b>Collect data to improve posture</b><span> 2.1.7 &mdash; signals inform the trust algorithm.</span></div>
     <div class="tenet" style="border-color: var(--accent); background: var(--accent-soft);"><div class="t-num">Core loop</div><b>PE &larr; Signals; PA &rarr; Bundles; PEPs everywhere</b><span>Every tenet is realised by a concrete component.</span></div>
   </div>
 </section>
@@ -1822,7 +1913,7 @@
   <div class="eyebrow">C4 Level 1</div>
   <h2><span class="num">&sect;03</span> Context &mdash; enterprise, people, counterparties</h2>
 
-  <p>At Level 1 the Bank is treated as a single logical system surrounded by untrusted actors. Every arrow crosses a trust boundary; no network segment, including the corporate LAN, is trusted by default (NIST&nbsp;800-207 §2.1 tenet&nbsp;4, which denies implicit trust from location).</p>
+  <p>At Level 1 the Bank is treated as a single logical system surrounded by untrusted actors. Every arrow crosses a trust boundary; no network segment, including the corporate LAN, is trusted by default (NIST&nbsp;800-207  2.1 tenet&nbsp;4, which denies implicit trust from location).</p>
 
   <div class="figure">
     <div class="figure-caption"><span>Figure 1 &mdash; Enterprise context</span><b>C4 L1</b></div>
@@ -1894,7 +1985,7 @@
 
         <!-- Trust boundary -->
         <rect x="310" y="170" width="340" height="180" class="tb"/>
-        <text x="310" y="165" class="lbl-s">Untrusted-by-default boundary (NIST 800-207 §2.1)</text>
+        <text x="310" y="165" class="lbl-s">Untrusted-by-default boundary (NIST 800-207  2.1)</text>
       </svg>
     </div>
   </div>
@@ -1952,7 +2043,7 @@
 
         <!-- Data Sources -->
         <rect x="40" y="40" width="260" height="420" class="grp"/>
-        <text x="50" y="35" class="grp-l">Data Sources (NIST §3.2)</text>
+        <text x="50" y="35" class="grp-l">Data Sources (NIST  3.2)</text>
 
         <rect x="60" y="60" width="220" height="40" class="ds"/>
         <text x="70" y="78" class="th">CDM</text>
@@ -2051,10 +2142,10 @@
   <h3>Control-plane placement</h3>
   <p>The PE is implemented as a distributed OPA fleet (with AWS Cedar co-resident where Cedar's typed-policy strengths are needed, for example in the data-plane ABAC layer). PEs run as sidecars alongside each major PEP class to minimise policy-decision latency (&lt;10&nbsp;ms P99 target). The PA is a custom control-plane service that compiles, signs (cosign, in-toto attestation) and publishes OPA bundles and Cedar policy stores to the PE fleet over mutually authenticated channels. Policies are stored in Git with four-eyes review; the PA is the only component with write access to signed policy buckets (S3 Object Lock, Azure Blob immutability).</p>
 
-  <p>The Trust Algorithm component inside the control plane consumes streaming signals from all Data Sources via Kafka and produces a continuous <code>trust_score</code> per principal (workforce user, customer, workload) &mdash; this is the "continuous-diagnostics" feedback loop required by NIST 800-207 §2.1 tenet&nbsp;7 and §3.3.1 (criteria-based trust algorithm). The score is emitted as a signed JWT claim consumed by PEPs via AuthZEN <code>context</code>.</p>
+  <p>The Trust Algorithm component inside the control plane consumes streaming signals from all Data Sources via Kafka and produces a continuous <code>trust_score</code> per principal (workforce user, customer, workload) &mdash; this is the "continuous-diagnostics" feedback loop required by NIST 800-207  2.1 tenet&nbsp;7 and  3.3.1 (criteria-based trust algorithm). The score is emitted as a signed JWT claim consumed by PEPs via AuthZEN <code>context</code>.</p>
 
   <h3>Data Sources</h3>
-  <p>Eight Data Sources are catalogued (see catalogue in §07). The opinionated decision here is to treat the Data Access Policy store (Immuta) as a first-class, separate source rather than collapsing it into the PE, because data-plane ABAC operates on row/column predicates rather than request-scope policies and scales independently. Fraud/AML scoring is separated from the general UEBA pipeline; mixing the two leads to false positives on high-value corporate flows (Basel III ORM evidence shows commercial payment behaviour has a heavier tail than retail).</p>
+  <p>Eight Data Sources are catalogued (see catalogue in  07). The opinionated decision here is to treat the Data Access Policy store (Immuta) as a first-class, separate source rather than collapsing it into the PE, because data-plane ABAC operates on row/column predicates rather than request-scope policies and scales independently. Fraud/AML scoring is separated from the general UEBA pipeline; mixing the two leads to false positives on high-value corporate flows (Basel III ORM evidence shows commercial payment behaviour has a heavier tail than retail).</p>
 
   <h3>PEPs</h3>
   <p>PEP diversity is intentional. A single PEP class cannot reasonably enforce identity for HTTP APIs, east-west gRPC, mainframe CICS transactions, SaaS SAML sessions, privileged SSH, database reads and LLM prompt flow. Each class exists because the protocol semantics require dedicated enforcement; each terminates identity, consults the PE via AuthZEN, and writes a structured audit event to the activity log.</p>
@@ -2155,7 +2246,7 @@
   </div>
 
   <ol>
-    <li><strong>Device attestation and passkey.</strong> At app launch, the mobile client performs Google Play Integrity or Apple App Attest, producing a signed device posture assertion bound to a device-local FIDO2 credential stored in the Secure Enclave/StrongBox. The user authenticates with a resident-key passkey unlocked by platform biometrics. This satisfies PSD2 SCA (two independent factors: possession of the device-bound private key plus inherence via biometric) and is phishing-resistant (CTAP2 with attested authenticators). <em>NIST 800-207 §2.1 tenet&nbsp;6 &mdash; dynamic authentication and strict enforcement per resource.</em></li>
+    <li><strong>Device attestation and passkey.</strong> At app launch, the mobile client performs Google Play Integrity or Apple App Attest, producing a signed device posture assertion bound to a device-local FIDO2 credential stored in the Secure Enclave/StrongBox. The user authenticates with a resident-key passkey unlocked by platform biometrics. This satisfies PSD2 SCA (two independent factors: possession of the device-bound private key plus inherence via biometric) and is phishing-resistant (CTAP2 with attested authenticators). <em>NIST 800-207  2.1 tenet&nbsp;6 &mdash; dynamic authentication and strict enforcement per resource.</em></li>
     <li><strong>OIDC hybrid flow to ForgeRock CIAM.</strong> The CIAM issues a short-lived (5-minute) access token bound to a DPoP proof-of-possession key (RFC 9449), with a <code>cnf</code> claim carrying the JWK thumbprint. An ID Token is issued alongside, signed by a CIAM signing key rooted in a cloud HSM.</li>
     <li><strong>Payment API call.</strong> The app calls <code>POST /v2/payments</code> at the Kong FAPI PEP, sending the DPoP proof JWT and a signed JWS request object containing <code>amount</code>, <code>payee</code>, <code>timestamp</code> &mdash; the PSD2 SCA dynamic-linking digest. Kong validates token signature, audience, expiry, DPoP binding, mTLS client certificate (OAuth 2 mTLS-bound tokens per RFC 8705 for corporate API paths), and request-object signature against the CIAM JWKS.</li>
     <li><strong>AuthZEN decision request.</strong> Kong sends an AuthZEN <code>/access/v1/evaluation</code> request to the local OPA PE with <code>subject</code>, <code>resource</code>, <code>action</code> and a rich <code>context</code> including device posture, CIAM trust score and request metadata.</li>
@@ -2164,7 +2255,7 @@
     <li><strong>Step-up.</strong> Kong returns 401 with the obligation; the app prompts the user for a second biometric confirming the dynamic-linking digest (amount + payee hash), producing a second CTAP2 assertion.</li>
     <li><strong>Re-submission and allow.</strong> The request is re-evaluated; OPA returns <code>{decision: "allow"}</code>. Kong routes to the Payments microservice over the Istio mesh; the sidecar Envoy mTLS handshake uses SPIFFE SVIDs with spiffe-IDs <code>spiffe://bank/retail/payments-api</code> and <code>spiffe://bank/retail/payments-service</code>.</li>
     <li><strong>Core-banking propagation.</strong> The microservice posts to an MQ queue whose consumer is a <code>z/OS</code> CICS transaction; the identity token is propagated as an MQ message header and mapped via the identity gateway to a RACF ID. The mainframe PEP (Broadcom AAM) validates the mapped ID and transaction scope before the CICS transaction commits.</li>
-    <li><strong>Evidence.</strong> Every step emits an OpenTelemetry span with <code>trace_id</code>, <code>policy_bundle_hash</code>, <code>decision_id</code> and <code>signal_hash</code>. The full causal chain is reconstructable from the activity log for the SOX §404 evidence pack.</li>
+    <li><strong>Evidence.</strong> Every step emits an OpenTelemetry span with <code>trace_id</code>, <code>policy_bundle_hash</code>, <code>decision_id</code> and <code>signal_hash</code>. The full causal chain is reconstructable from the activity log for the SOX  404 evidence pack.</li>
   </ol>
 
   <div class="figure">
@@ -2344,7 +2435,7 @@ audit := {
   <div class="comp" data-cat="identity">
     <div class="comp-head"><h4>ForgeRock CIAM <span class="comp-cat">Identity DS</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source</span></div>
     <dl class="comp-grid">
-      <dt>Rationale</dt><dd>Consumer-scale identity with progressive-profiling, risk-based auth, OIDC/FAPI 2.0 issuance and WebAuthn/passkey support. Satisfies NIST 800-207 §2.1 tenets 3 and 6 (per-session, dynamic authentication).</dd>
+      <dt>Rationale</dt><dd>Consumer-scale identity with progressive-profiling, risk-based auth, OIDC/FAPI 2.0 issuance and WebAuthn/passkey support. Satisfies NIST 800-207  2.1 tenets 3 and 6 (per-session, dynamic authentication).</dd>
       <dt>NIST role</dt><dd>Identity Data Source; co-operates with PE as a continuous-signal emitter.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> ForgeRock (Ping), Auth0/Okta CIC. <strong>Open source:</strong> Keycloak with Authlete FAPI module &mdash; cheaper, less feature-rich for fraud-aware journeys. Recommend ForgeRock for retail and Keycloak+Authlete for TPPs and internal partner federation.</dd>
       <dt>Regulation</dt><dd>PSD2 RTS on SCA (Articles 4, 5, 9), Open Banking UK OBIE conformance, DORA Art. 9 (ICT protection). PCI-DSS 4.0 req 8 (user authentication) for card-controls paths.</dd>
@@ -2356,10 +2447,10 @@ audit := {
   <div class="comp" data-cat="identity">
     <div class="comp-head"><h4>Microsoft Entra ID (Workforce) <span class="comp-cat">Identity DS</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source</span></div>
     <dl class="comp-grid">
-      <dt>Rationale</dt><dd>Authoritative workforce directory, tight integration with Microsoft 365 and Conditional Access. Issues OIDC tokens consumed by PEPs and provides a rich posture signal (device compliance via Intune). NIST 800-207 §2.1 tenet 7 (continuous monitoring of user and device).</dd>
+      <dt>Rationale</dt><dd>Authoritative workforce directory, tight integration with Microsoft 365 and Conditional Access. Issues OIDC tokens consumed by PEPs and provides a rich posture signal (device compliance via Intune). NIST 800-207  2.1 tenet 7 (continuous monitoring of user and device).</dd>
       <dt>NIST role</dt><dd>Identity Data Source; Conditional Access engine is effectively a per-application PDP.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> Entra ID, Ping Identity. <strong>Open source:</strong> FreeIPA/Keycloak &mdash; viable for bridging, not authoritative at 80k-staff scale. Recommend Entra ID given Microsoft 365 saturation.</dd>
-      <dt>Regulation</dt><dd>SOX §404 ICFR (privileged access evidence), FFIEC AIO booklet, PCI-DSS 4.0 req 8.3 MFA, DORA Art. 9.</dd>
+      <dt>Regulation</dt><dd>SOX  404 ICFR (privileged access evidence), FFIEC AIO booklet, PCI-DSS 4.0 req 8.3 MFA, DORA Art. 9.</dd>
       <dt>Reference</dt><dd>Capital One and Standard Chartered public Entra + Conditional Access implementations. CISA ZTMM "Identity" pillar maturity guidance is the closest policy analogue.</dd>
     </dl>
   </div>
@@ -2371,7 +2462,7 @@ audit := {
       <dt>Rationale</dt><dd>SaaS federation hub for ~1,200 applications. Reduces the fan-out of trust relationships from the workforce IdP to one broker. Enforces session-risk and device-trust at SaaS ingress.</dd>
       <dt>NIST role</dt><dd>Secondary Identity Data Source; acts as a PEP for SaaS sessions in cooperation with Netskope CASB.</dd>
       <dt>Vendors</dt><dd>Okta (recommended), Ping Federate (equivalent), Keycloak (open source, higher operational cost for 1,200 SaaS integrations).</dd>
-      <dt>Regulation</dt><dd>DORA Art. 28 (ICT third-party risk), SOX §404 evidence for SaaS access, FFIEC Outsourcing booklet.</dd>
+      <dt>Regulation</dt><dd>DORA Art. 28 (ICT third-party risk), SOX  404 evidence for SaaS access, FFIEC Outsourcing booklet.</dd>
       <dt>Reference</dt><dd>HSBC and NAB have publicly referenced Okta for large-scale workforce federation.</dd>
     </dl>
   </div>
@@ -2380,10 +2471,10 @@ audit := {
   <div class="comp" data-cat="identity">
     <div class="comp-head"><h4>SPIFFE / SPIRE <span class="comp-cat">Workload Identity</span></h4><span class="comp-tag">NIST &mdash; Identity Data Source (workload)</span></div>
     <dl class="comp-grid">
-      <dt>Rationale</dt><dd>Cryptographically verifiable, short-lived workload identities across K8s, VMs and AWS Lambda. Eliminates long-lived service-account secrets. NIST 800-207 §2.1 tenet 2 (security of all resources regardless of location) applied to services.</dd>
+      <dt>Rationale</dt><dd>Cryptographically verifiable, short-lived workload identities across K8s, VMs and AWS Lambda. Eliminates long-lived service-account secrets. NIST 800-207  2.1 tenet 2 (security of all resources regardless of location) applied to services.</dd>
       <dt>NIST role</dt><dd>Identity Data Source for workloads; issuer for the workload-PKI used by PEPs.</dd>
       <dt>Vendors</dt><dd><strong>Open source:</strong> SPIRE (CNCF graduated). <strong>Commercial:</strong> HPE SPIFFE/SPIRE, Tetrate Service Bridge. Recommend SPIRE with commercial support from Tetrate or HPE given bank-scale SLAs.</dd>
-      <dt>Regulation</dt><dd>DORA Art. 9 (including non-human identities under ICT risk management), NIST 800-207 §3.1.3.</dd>
+      <dt>Regulation</dt><dd>DORA Art. 9 (including non-human identities under ICT risk management), NIST 800-207  3.1.3.</dd>
       <dt>Reference</dt><dd>Bloomberg's SPIRE deployment is public (2022 CNCF talk). Closest FI-adjacent analogue; major banks have not publicly disclosed SPIRE use but several are known implementers.</dd>
     </dl>
   </div>
@@ -2393,9 +2484,9 @@ audit := {
     <div class="comp-head"><h4>Open Policy Agent (PE) <span class="comp-cat">Control Plane</span></h4><span class="comp-tag">NIST &mdash; Policy Engine (PDP)</span></div>
     <dl class="comp-grid">
       <dt>Rationale</dt><dd>The PE of choice &mdash; declarative Rego, deterministic evaluation, sub-millisecond P99 at sidecar scale, bundle-based signed distribution. AuthZEN-capable.</dd>
-      <dt>NIST role</dt><dd>Policy Engine (per §3.1.1).</dd>
+      <dt>NIST role</dt><dd>Policy Engine (per  3.1.1).</dd>
       <dt>Vendors</dt><dd><strong>Open source:</strong> OPA (recommended). <strong>Commercial:</strong> Styra DAS for centralised policy management; AWS Cedar + Verified Permissions for typed data-plane policies. Recommend OPA-as-sidecar with Styra DAS for enterprise distribution, Cedar for row/column data policy.</dd>
-      <dt>Regulation</dt><dd>Every access decision must be reproducible for SOX §404 and DORA Art. 6. OPA's decision log with bundle hash is the canonical evidence.</dd>
+      <dt>Regulation</dt><dd>Every access decision must be reproducible for SOX  404 and DORA Art. 6. OPA's decision log with bundle hash is the canonical evidence.</dd>
       <dt>Reference</dt><dd>Goldman Sachs and Capital One have public OPA deployments at scale (KubeCon 2023, AWS re:Invent 2022).</dd>
     </dl>
   </div>
@@ -2404,10 +2495,10 @@ audit := {
   <div class="comp" data-cat="control">
     <div class="comp-head"><h4>Policy Administrator <span class="comp-cat">Control Plane</span></h4><span class="comp-tag">NIST &mdash; Policy Administrator (PA)</span></div>
     <dl class="comp-grid">
-      <dt>Rationale</dt><dd>The PA compiles, tests, signs (cosign, in-toto) and publishes policy bundles to the PE fleet. Enforces segregation of duties &mdash; no single engineer can push policy to production. Direct execution of NIST 800-207 §2.1 tenet 5.</dd>
+      <dt>Rationale</dt><dd>The PA compiles, tests, signs (cosign, in-toto) and publishes policy bundles to the PE fleet. Enforces segregation of duties &mdash; no single engineer can push policy to production. Direct execution of NIST 800-207  2.1 tenet 5.</dd>
       <dt>NIST role</dt><dd>Policy Administrator.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> Styra DAS. <strong>Open source:</strong> GitOps-driven (Argo CD + OPA bundle server). Recommend Styra DAS because the bank's policy fleet will exceed 10k bundles.</dd>
-      <dt>Regulation</dt><dd>SOX §404 change-control evidence; DORA Art. 8 (ICT change management).</dd>
+      <dt>Regulation</dt><dd>SOX  404 change-control evidence; DORA Art. 8 (ICT change management).</dd>
       <dt>Reference</dt><dd>CISA ZTMM prescribes a dedicated policy administration function in its "Governance" cross-cut.</dd>
     </dl>
   </div>
@@ -2431,7 +2522,7 @@ audit := {
       <dt>Rationale</dt><dd>mTLS with SPIFFE SVIDs, per-request authorisation via Envoy external AuthZ calling OPA, structured access logs. Covers every east-west hop in K8s.</dd>
       <dt>NIST role</dt><dd>PEP for service-to-service traffic; cooperates with SPIRE.</dd>
       <dt>Vendors</dt><dd><strong>Open source:</strong> Istio (recommended), Linkerd (simpler, fewer features). <strong>Commercial:</strong> Tetrate Service Bridge for multi-cluster federation.</dd>
-      <dt>Regulation</dt><dd>DORA Art. 9, NIST 800-207 §3.1.2 micro-segmentation model.</dd>
+      <dt>Regulation</dt><dd>DORA Art. 9, NIST 800-207  3.1.2 micro-segmentation model.</dd>
       <dt>Reference</dt><dd>eBay, Airbnb and Splunk Istio-at-scale references; Deutsche Bank Istio talks at KubeCon EU 2023.</dd>
     </dl>
   </div>
@@ -2444,7 +2535,7 @@ audit := {
       <dt>NIST role</dt><dd>PEP for workforce access to internal apps.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> Zscaler ZPA (recommended), Cloudflare Access, Netskope Private Access. <strong>Open source:</strong> OpenZiti.</dd>
       <dt>Regulation</dt><dd>DORA Art. 9, PCI-DSS 4.0 req 7 (least privilege) for CDE access paths.</dd>
-      <dt>Reference</dt><dd>CISA ZT guidance endorses ZTNA over VPN; MAS TRM Guidelines §9 remote-access.</dd>
+      <dt>Reference</dt><dd>CISA ZT guidance endorses ZTNA over VPN; MAS TRM Guidelines  9 remote-access.</dd>
     </dl>
   </div>
 
@@ -2455,7 +2546,7 @@ audit := {
       <dt>Rationale</dt><dd>JIT elevation, session recording and vaulted credentials for Tier-0 and payments systems. Break-glass gateway into SWIFT Alliance, HSMs and the Payments Hub.</dd>
       <dt>NIST role</dt><dd>PEP for privileged sessions; Identity Data Source for privileged events.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> CyberArk (recommended), BeyondTrust, Delinea. <strong>Open source:</strong> Teleport (credible at this scale).</dd>
-      <dt>Regulation</dt><dd>SWIFT CSCF v2024 controls 1.2, 5.1, 6.4; PCI-DSS 4.0 req 7, 8.6; SOX §404 segregation of duties.</dd>
+      <dt>Regulation</dt><dd>SWIFT CSCF v2024 controls 1.2, 5.1, 6.4; PCI-DSS 4.0 req 7, 8.6; SOX  404 segregation of duties.</dd>
       <dt>Reference</dt><dd>CyberArk case studies with three of the four major UK clearing banks (vendor-attributed).</dd>
     </dl>
   </div>
@@ -2479,7 +2570,7 @@ audit := {
       <dt>Rationale</dt><dd>Real-time detection in Splunk ES; long-term, cost-efficient retention and analytics in Snowflake. Every PEP decision and identity event indexed by <code>trace_id</code> and <code>decision_id</code>.</dd>
       <dt>NIST role</dt><dd>Activity Log and SIEM Data Sources.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> Splunk ES, Microsoft Sentinel, Google Chronicle. <strong>Open source:</strong> Elastic Security, Wazuh + OpenSearch. Recommend a federated Splunk-for-detection, Snowflake-for-retention pattern to manage licence cost.</dd>
-      <dt>Regulation</dt><dd>SOX §404 (7-year audit trail), DORA Arts. 10&ndash;11 (detection and reporting), PCI-DSS 4.0 req 10 (log and monitor).</dd>
+      <dt>Regulation</dt><dd>SOX  404 (7-year audit trail), DORA Arts. 10&ndash;11 (detection and reporting), PCI-DSS 4.0 req 10 (log and monitor).</dd>
       <dt>Reference</dt><dd>Bank of America and Barclays have publicly discussed Splunk+Snowflake security-lake patterns at industry events.</dd>
     </dl>
   </div>
@@ -2540,7 +2631,7 @@ audit := {
       <dt>NIST role</dt><dd>PEP for SaaS and egress paths; DLP Data Source.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> Netskope (recommended), Zscaler ZIA, Palo Alto Prisma Access. <strong>Open source:</strong> none at feature parity.</dd>
       <dt>Regulation</dt><dd>DORA Art. 28 (TPP), GDPR data-flow control, PCI-DSS 4.0 req 12.8 (service providers).</dd>
-      <dt>Reference</dt><dd>UK NCSC ZT principles §SSE; several large US banks are public Netskope customers.</dd>
+      <dt>Reference</dt><dd>UK NCSC ZT principles  SSE; several large US banks are public Netskope customers.</dd>
     </dl>
   </div>
 
@@ -2563,7 +2654,7 @@ audit := {
       <dt>Rationale</dt><dd>Bridges modern OIDC/Kerberos identities into RACF IDs with Kerberos constrained delegation and digital-certificate mapping. Enables ZTA for <code>z/OS</code> without rewriting CICS transactions.</dd>
       <dt>NIST role</dt><dd>PEP for mainframe; Identity Gateway.</dd>
       <dt>Vendors</dt><dd><strong>Commercial:</strong> Broadcom AAM (recommended), Vanguard Integrity, IBM z Multi-Factor Authentication. <strong>Open source:</strong> none practical.</dd>
-      <dt>Regulation</dt><dd>SOX §404 (core ledger controls), PCI-DSS 4.0 (cardholder data on mainframe).</dd>
+      <dt>Regulation</dt><dd>SOX  404 (core ledger controls), PCI-DSS 4.0 (cardholder data on mainframe).</dd>
       <dt>Reference</dt><dd>US Federal Reserve, Wells Fargo and Barclays publicly run mainframe MFA programmes.</dd>
     </dl>
   </div>
@@ -2601,13 +2692,13 @@ audit := {
   <p>CyberArk PAM provides vaulted credentials, just-in-time elevation, session brokering and recording. The ZTA principle is that a privileged user is not trusted merely because they are a privileged user &mdash; every action is a new authorisation decision. For SWIFT and the Payments Hub the PAM session broker is itself a PEP: the operator authenticates to PSM with FIDO2, PSM requests a fresh PE decision with session context (change window, CAB ticket, dual-approval token), and only then opens an RDP/SSH channel to the jump host, which is recorded end-to-end. Break-glass paths are pre-signed and time-limited; use triggers an out-of-band page to the CISO and an automatic Jira incident.</p>
 
   <h3>8.5 &nbsp; Logging, audit trail and SIEM</h3>
-  <p>Every PEP emits a structured event with a minimum schema: <code>trace_id</code>, <code>decision_id</code>, <code>bundle_hash</code>, <code>subject_id</code>, <code>resource</code>, <code>action</code>, <code>effect</code>, <code>obligations</code>, <code>signal_hash</code>, <code>ts</code>. Events stream via OpenTelemetry Collector to Kafka, then to Splunk ES for detection and Snowflake for retention. Retention is 7 years for SOX-relevant events in S3 Object Lock (WORM) and 10 years for SWIFT CSCF and payments. An optional <strong>blockchain-anchored</strong> hash-chain (e.g., AWS QLDB with quarterly anchor to a public chain) is recommended for adversarial-auditor scenarios; the ARB should weigh this against reputational exposure of public-chain inclusion. The SOX §404 evidence workflow reconstructs every production access from the PEP log by <code>decision_id</code>; sample-based testing is replaced by deterministic replay of the policy bundle against the stored signal vector.</p>
+  <p>Every PEP emits a structured event with a minimum schema: <code>trace_id</code>, <code>decision_id</code>, <code>bundle_hash</code>, <code>subject_id</code>, <code>resource</code>, <code>action</code>, <code>effect</code>, <code>obligations</code>, <code>signal_hash</code>, <code>ts</code>. Events stream via OpenTelemetry Collector to Kafka, then to Splunk ES for detection and Snowflake for retention. Retention is 7 years for SOX-relevant events in S3 Object Lock (WORM) and 10 years for SWIFT CSCF and payments. An optional <strong>blockchain-anchored</strong> hash-chain (e.g., AWS QLDB with quarterly anchor to a public chain) is recommended for adversarial-auditor scenarios; the ARB should weigh this against reputational exposure of public-chain inclusion. The SOX  404 evidence workflow reconstructs every production access from the PEP log by <code>decision_id</code>; sample-based testing is replaced by deterministic replay of the policy bundle against the stored signal vector.</p>
 
   <h3>8.6 &nbsp; Observability</h3>
   <p>OpenTelemetry is the sole instrumentation standard. Metrics, traces and logs are correlated by <code>trace_id</code>. Key SLOs for the Policy Plane: PEP-to-PE decision latency P99 &lt; 10&nbsp;ms in-region; PE availability 99.995% (Tier-0); policy-bundle propagation latency P99 &lt; 60&nbsp;s; decision-log loss rate &lt; 10<sup>&minus;6</sup>. Dashboards surface per-policy allow/deny/step-up rates, unusual deny spikes (likely policy regression), and "decisions-per-user" anomaly bands. Error budgets are tracked against these SLOs; exhaustion freezes non-emergency policy releases.</p>
 
   <h3>8.7 &nbsp; API security</h3>
-  <p>Every external API adopts FAPI 2.0 Security Profile. Specifically: <strong>PAR</strong> (RFC 9126) prevents request-parameter tampering; <strong>DPoP</strong> (RFC 9449) binds access tokens to a client key, preventing replay; <strong>mTLS-bound tokens</strong> (RFC 8705) for corporate and payment-initiation paths; <strong>JARM</strong> for signed authorisation responses; <strong>JWS request objects</strong> carrying the PSD2 SCA dynamic-linking digest. Rate limiting and bot defence run at Kong (Arkose Labs or hCaptcha for high-risk endpoints). For FAPI-CIBA decoupled flows (e.g., corporate treasurer initiating, CFO approving), the authorisation server uses push-notification with a signed approval JWT. Internal APIs use the same gateway but with relaxed profiles; all still require tokens (no anonymous internal endpoints, honouring NIST 800-207 §2.1 tenet 2).</p>
+  <p>Every external API adopts FAPI 2.0 Security Profile. Specifically: <strong>PAR</strong> (RFC 9126) prevents request-parameter tampering; <strong>DPoP</strong> (RFC 9449) binds access tokens to a client key, preventing replay; <strong>mTLS-bound tokens</strong> (RFC 8705) for corporate and payment-initiation paths; <strong>JARM</strong> for signed authorisation responses; <strong>JWS request objects</strong> carrying the PSD2 SCA dynamic-linking digest. Rate limiting and bot defence run at Kong (Arkose Labs or hCaptcha for high-risk endpoints). For FAPI-CIBA decoupled flows (e.g., corporate treasurer initiating, CFO approving), the authorisation server uses push-notification with a signed approval JWT. Internal APIs use the same gateway but with relaxed profiles; all still require tokens (no anonymous internal endpoints, honouring NIST 800-207  2.1 tenet 2).</p>
 
   <h3>8.8 &nbsp; Data protection</h3>
   <p>Data classification is a five-tier model (Public, Internal, Confidential, Restricted, Secret) driving policy. Card-data PANs are tokenised at ingest by a Thales CipherTrust tokenisation vault; the PCI-DSS scope is contracted to the vault and the card-issuing HSM cluster. Format-preserving encryption (FF3-1) protects legacy systems that cannot handle tokens. Database proxies (CyberArk Secure DB Access) and Immuta policies enforce row/column ABAC at the data plane. DLP runs at SaaS egress (Netskope) and at API PEPs. <strong>Post-quantum readiness</strong> is staged: (i) crypto-inventory (Venafi + bespoke scanner) by end-phase 1; (ii) hybrid KEM trial (ML-KEM-768 + X25519) on internal mTLS in phase 2; (iii) FAPI PQ profile once standardised (~2028).</p>
@@ -2623,7 +2714,7 @@ audit := {
     <li><strong>Repudiation:</strong> Decision logs are WORM-anchored. The hash-chain architecture prevents retroactive edit.</li>
     <li><strong>Information disclosure:</strong> Policies may embed sensitive predicates (limits, sanctions lists). Policy bundles are encrypted at rest and access-audited; debug logs redact <code>input</code>.</li>
     <li><strong>Denial of Service of the policy plane:</strong> PEs are locally cached at each PEP with short TTL and "last-known-good" semantics; under PE outage the PEP fails closed for high-risk resources and fails-safe-with-reduced-capability for low-risk resources (e.g., permit read-only). Multi-region active-active PE/PA.</li>
-    <li><strong>Elevation via policy regression:</strong> Every policy change goes through signed CI with opa-test, policy-diff review, staged rollout to canary PEs, and automated rollback on allow-rate anomaly. Policy-as-code review is augmented by Claude Mythos Preview (see §09) or Claude Opus 4.7 as a GA fallback.</li>
+    <li><strong>Elevation via policy regression:</strong> Every policy change goes through signed CI with opa-test, policy-diff review, staged rollout to canary PEs, and automated rollback on allow-rate anomaly. Policy-as-code review is augmented by Claude Mythos Preview (see  09) or Claude Opus 4.7 as a GA fallback.</li>
   </ul>
   <p>The single gravest systemic risk is the Policy Plane becoming the target. We therefore treat PE and PA as Tier-0 alongside PKI and the core ledger, with separate admin identities, independent out-of-band MFA, and dedicated network fabric (not on the same east-west mesh it governs).</p>
 </section>
@@ -2640,7 +2731,7 @@ audit := {
     <div class="ai-grid">
       <div><b>Signal</b>Workforce session telemetry (auth events, app telemetry, endpoint signals) normalised into behavioural baselines.</div>
       <div><b>Decision</b>Continuous <code>trust_score</code> (0&ndash;1) consumed by the PE as a first-class input to step-up and revocation policies.</div>
-      <div><b>NIST component</b>Augments the Trust Algorithm inside the PE (§3.3.1).</div>
+      <div><b>NIST component</b>Augments the Trust Algorithm inside the PE ( 3.3.1).</div>
       <div><b>Models</b>Microsoft Defender for Identity, Exabeam, or custom isolation-forest + sequence models on Databricks.</div>
       <div><b>FP tolerance</b>Medium &mdash; a FP triggers step-up, not block. Target &lt;0.5% false step-up rate; tuned per role cohort.</div>
       <div><b>HITL</b>Score &gt;0.9 (high-severity) routes to SOC Tier-2 for review; never auto-disables workforce accounts.</div>
@@ -2700,7 +2791,7 @@ audit := {
     <div class="ai-grid">
       <div><b>Signal</b>Source code and IaC for PE, PA, custom PEPs; build artefacts; dynamic traffic captures from staging.</div>
       <div><b>Decision</b>Flags vulnerabilities, drafts proof-of-concept exploits, suggests fixes; simulates red-team scenarios against PE/PA.</div>
-      <div><b>NIST component</b>Supports the threat model of the ZTA itself (§8.10) and the CDM Data Source.</div>
+      <div><b>NIST component</b>Supports the threat model of the ZTA itself ( 8.10) and the CDM Data Source.</div>
       <div><b>Primary model</b><strong>Claude Mythos Preview</strong> (Anthropic, released April 2026 under <em>Project Glasswing</em>). Restricted preview for a small cohort of security partners &mdash; the Bank engages via Project Glasswing membership and runs inference either in Anthropic's secure enclave or a private preview tier of AWS Bedrock/GCP Vertex. Data residency is negotiated; prompts never leave an approved boundary. Strengths: frontier capability on adversarial reasoning across Rego, Cedar, Envoy filters and mTLS fabrics; native red-team simulation mode.</div>
       <div><b>Fallback</b><strong>Claude Opus 4.7</strong> on AWS Bedrock (GA) for general SAST/DAST; open-source options (Semgrep, CodeQL, Ghidra-assisted LLM pipelines) for non-AI-accessible zones. The architecture must work without Mythos; Mythos is an amplifier.</div>
       <div><b>FP tolerance</b>High at the discovery stage (findings enter a triage queue). Low for "autonomous exploitation in production" &mdash; not permitted.</div>
@@ -2735,23 +2826,23 @@ audit := {
       </thead>
       <tbody>
         <tr><td>ForgeRock CIAM</td><td class="mono">Identity DS</td><td>ForgeRock (Ping)</td><td>PSD2 SCA, FAPI 2.0, DORA Art. 9</td></tr>
-        <tr><td>Entra ID</td><td class="mono">Identity DS</td><td>Microsoft</td><td>SOX §404, PCI-DSS 4.0 r8, DORA Art. 9</td></tr>
-        <tr><td>Okta Workforce</td><td class="mono">Identity DS / SaaS PEP</td><td>Okta</td><td>DORA Art. 28, SOX §404, FFIEC Outsourcing</td></tr>
-        <tr><td>SPIRE</td><td class="mono">Workload Identity DS</td><td>SPIRE + Tetrate support</td><td>DORA Art. 9, NIST 800-207 §3.1.3</td></tr>
-        <tr><td>Open Policy Agent</td><td class="mono">Policy Engine</td><td>OPA + Styra DAS</td><td>SOX §404, DORA Art. 6</td></tr>
-        <tr><td>Policy Administrator</td><td class="mono">Policy Administrator</td><td>Styra DAS + GitOps</td><td>SOX §404, DORA Art. 8</td></tr>
+        <tr><td>Entra ID</td><td class="mono">Identity DS</td><td>Microsoft</td><td>SOX  404, PCI-DSS 4.0 r8, DORA Art. 9</td></tr>
+        <tr><td>Okta Workforce</td><td class="mono">Identity DS / SaaS PEP</td><td>Okta</td><td>DORA Art. 28, SOX  404, FFIEC Outsourcing</td></tr>
+        <tr><td>SPIRE</td><td class="mono">Workload Identity DS</td><td>SPIRE + Tetrate support</td><td>DORA Art. 9, NIST 800-207  3.1.3</td></tr>
+        <tr><td>Open Policy Agent</td><td class="mono">Policy Engine</td><td>OPA + Styra DAS</td><td>SOX  404, DORA Art. 6</td></tr>
+        <tr><td>Policy Administrator</td><td class="mono">Policy Administrator</td><td>Styra DAS + GitOps</td><td>SOX  404, DORA Art. 8</td></tr>
         <tr><td>Kong + Authlete</td><td class="mono">API PEP</td><td>Kong Enterprise + Authlete</td><td>FAPI 2.0, PSD2, UK OBIE, Berlin Group, Brazil Open Finance</td></tr>
-        <tr><td>Istio Service Mesh</td><td class="mono">East-West PEP</td><td>Istio (Tetrate)</td><td>DORA Art. 9, NIST §3.1.2</td></tr>
+        <tr><td>Istio Service Mesh</td><td class="mono">East-West PEP</td><td>Istio (Tetrate)</td><td>DORA Art. 9, NIST  3.1.2</td></tr>
         <tr><td>Zscaler Private Access</td><td class="mono">User-to-App PEP</td><td>Zscaler</td><td>PCI-DSS 4.0 r7, DORA Art. 9, MAS TRM</td></tr>
-        <tr><td>CyberArk PAM</td><td class="mono">Privileged PEP</td><td>CyberArk</td><td>SWIFT CSCF 1.2/5.1/6.4, SOX §404, PCI-DSS 4.0 r7/8.6</td></tr>
+        <tr><td>CyberArk PAM</td><td class="mono">Privileged PEP</td><td>CyberArk</td><td>SWIFT CSCF 1.2/5.1/6.4, SOX  404, PCI-DSS 4.0 r7/8.6</td></tr>
         <tr><td>Vault + HSM</td><td class="mono">Supporting Infra / PKI DS</td><td>HashiCorp Vault + nCipher</td><td>PCI-DSS 4.0 r3/4, FIPS 140-3, DORA Art. 9, eIDAS 2</td></tr>
-        <tr><td>Splunk ES + Snowflake</td><td class="mono">Activity Log / SIEM DS</td><td>Splunk + Snowflake</td><td>SOX §404, DORA Arts. 10&ndash;11, PCI-DSS 4.0 r10</td></tr>
+        <tr><td>Splunk ES + Snowflake</td><td class="mono">Activity Log / SIEM DS</td><td>Splunk + Snowflake</td><td>SOX  404, DORA Arts. 10&ndash;11, PCI-DSS 4.0 r10</td></tr>
         <tr><td>OpenTelemetry</td><td class="mono">Activity Log DS</td><td>OTel + Dynatrace</td><td>DORA Art. 10, FFIEC Ops</td></tr>
         <tr><td>Wiz + Tanium</td><td class="mono">CDM DS</td><td>Wiz + Tanium</td><td>DORA Art. 9, PCI-DSS 4.0 r11, CISA ZTMM</td></tr>
         <tr><td>Venafi + AWS PCA</td><td class="mono">PKI DS</td><td>Venafi + AWS PCA</td><td>eIDAS 2, PCI-DSS 4.0 r4, DORA Art. 9</td></tr>
         <tr><td>Immuta</td><td class="mono">Data Access Policy DS</td><td>Immuta</td><td>GDPR, EU AI Act, BCBS 239</td></tr>
         <tr><td>Netskope SSE</td><td class="mono">SaaS / Egress PEP</td><td>Netskope</td><td>DORA Art. 28, GDPR, PCI-DSS 4.0 r12.8</td></tr>
-        <tr><td>Broadcom AAM (z/OS)</td><td class="mono">Mainframe PEP</td><td>Broadcom</td><td>SOX §404, PCI-DSS 4.0</td></tr>
+        <tr><td>Broadcom AAM (z/OS)</td><td class="mono">Mainframe PEP</td><td>Broadcom</td><td>SOX  404, PCI-DSS 4.0</td></tr>
         <tr><td>Featurespace ARIC</td><td class="mono">Risk DS</td><td>Featurespace</td><td>PSD2 TRA, 5/6AMLD, FFIEC BSA</td></tr>
         <tr><td>AI Gateway PEP</td><td class="mono">PEP (AI traffic)</td><td>In-house + Netskope AI</td><td>EU AI Act, DORA Art. 28, GDPR</td></tr>
       </tbody>
@@ -2769,7 +2860,7 @@ audit := {
           <th>PSD2 / SCA</th>
           <th>FAPI 2.0</th>
           <th>DORA</th>
-          <th>SOX §404</th>
+          <th>SOX  404</th>
           <th>PCI-DSS 4.0</th>
           <th>GDPR</th>
           <th>EU AI Act</th>
@@ -2916,7 +3007,7 @@ audit := {
     <div class="timeline-row">
       <div class="timeline-label">TLPT &amp; DORA attestation<small>Phase 3 &middot; red-team · regulator evidence</small></div>
       <div class="timeline-track">
-        <div class="timeline-bar timeline-phase-5" style="left: 80%; width: 20%;" title="DORA TLPT, SOX §404 walk-through, PRA §SS1/21 submission">TLPT + DORA</div>
+        <div class="timeline-bar timeline-phase-5" style="left: 80%; width: 20%;" title="DORA TLPT, SOX  404 walk-through, PRA  SS1/21 submission">TLPT + DORA</div>
       </div>
     </div>
 
@@ -3326,7 +3417,7 @@ audit := {
     <section class="gloss-letter" id="l-Q">
       <div class="gloss-letter-head">Q <small>1 term</small></div>
       <dl>
-        <div class="gloss-term"><dt><b>QLDB</b><em>AWS ledger</em></dt><dd>Immutable, cryptographically verifiable ledger used for append-only audit evidence; evaluated against WORM S3 for SOX §404 scope.</dd></div>
+        <div class="gloss-term"><dt><b>QLDB</b><em>AWS ledger</em></dt><dd>Immutable, cryptographically verifiable ledger used for append-only audit evidence; evaluated against WORM S3 for SOX  404 scope.</dd></div>
       </dl>
     </section>
 
@@ -3620,6 +3711,22 @@ audit := {
         if (emptyEl) emptyEl.classList.toggle('show', shown === 0);
       });
     }
+  })();
+
+  (() => {
+    const root = document.documentElement;
+    const btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const isDark = root.dataset.theme === 'dark';
+      if (isDark) {
+        delete root.dataset.theme;
+        btn.setAttribute('aria-pressed', 'false');
+      } else {
+        root.dataset.theme = 'dark';
+        btn.setAttribute('aria-pressed', 'true');
+      }
+    });
   })();
 </script>
 
